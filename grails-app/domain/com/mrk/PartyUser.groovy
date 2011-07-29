@@ -4,7 +4,7 @@ class PartyUser extends Party{
 	
 	String lastname
 	String firstname
-	User principal
+	Principal principal
 	
 	
 	static mapping = {

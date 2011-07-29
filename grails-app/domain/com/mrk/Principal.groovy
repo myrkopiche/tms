@@ -1,6 +1,6 @@
 package com.mrk
 
-class User {
+class Principal {
 
 	String username
 	String password
@@ -19,6 +19,6 @@ class User {
 	}
 
 	Set<Authority> getAuthorities() {
-		UserAuthority.findAllByUser(this).collect { it.authority } as Set
+		PrincipalAuthority.findAllByUser(this).collect { it.authority } as Set
 	}
 }

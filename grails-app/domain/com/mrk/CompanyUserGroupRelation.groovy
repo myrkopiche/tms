@@ -9,5 +9,6 @@ class CompanyUserGroupRelation {
 	boolean default_company = false
 	
     static constraints = {
+		group(nullable:true)
     }
 }

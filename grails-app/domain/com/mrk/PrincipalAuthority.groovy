@@ -2,13 +2,13 @@ package com.mrk
 
 import org.apache.commons.lang.builder.HashCodeBuilder
 
-class UserAuthority implements Serializable {
+class PrincipalAuthority implements Serializable {
 
-	User user
+	Principal user
 	Authority authority
 
 	boolean equals(other) {
-		if (!(other instanceof UserAuthority)) {
+		if (!(other instanceof PrincipalAuthority)) {
 			return false
 		}
 
@@ -23,21 +23,21 @@ class UserAuthority implements Serializable {
 		builder.toHashCode()
 	}
 
-	static UserAuthority get(long userId, long authorityId) {
+	static PrincipalAuthority get(long userId, long authorityId) {
 		find 'from UserAuthority where user.id=:userId and authority.id=:authorityId',
 			[userId: userId, authorityId: authorityId]
 	}
 
-	static UserAuthority create(User user, Authority authority, boolean flush = false) {
-		new UserAuthority(user: user, authority: authority).save(flush: flush, insert: true)
+	static PrincipalAuthority create(Principal user, Authority authority, boolean flush = false) {
+		new PrincipalAuthority(user: user, authority: authority).save(flush: flush, insert: true)
 	}
 
-	static boolean remove(User user, Authority authority, boolean flush = false) {
-		UserAuthority instance = UserAuthority.findByUserAndAuthority(user, authority)
+	static boolean remove(Principal user, Authority authority, boolean flush = false) {
+		PrincipalAuthority instance = PrincipalAuthority.findByUserAndAuthority(user, authority)
 		instance ? instance.delete(flush: flush) : false
 	}
 
-	static void removeAll(User user) {
+	static void removeAll(Principal user) {
 		executeUpdate 'DELETE FROM UserAuthority WHERE user=:user', [user: user]
 	}
 

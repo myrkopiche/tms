@@ -1,6 +1,8 @@
 import org.hibernate.validator.Email;
 import com.mrk.AccountType;
 import com.mrk.AddressType;
+import com.mrk.AdminGroup;
+import com.mrk.CompanyUserGroup;
 import com.mrk.Party;
 import com.mrk.PartyUser;
 import com.mrk.PartyCompany;
@@ -9,25 +11,27 @@ import com.mrk.PhoneType;
 import com.mrk.Type;
 import com.mrk.Address;
 import com.mrk.Authority
-import com.mrk.User;
-import com.mrk.UserAuthority;
+import com.mrk.Principal;
+import com.mrk.PrincipalAuthority;
 
 class BootStrap {
 	def springSecurityService
+	def partyService
 	
     def init = { servletContext ->
 		
-		def adminRole = new Authority(authority: 'ROLE_ADMIN').save(flush: true)
-		def userRole = new Authority(authority: 'ROLE_USER').save(flush: true)
+		def adminRole = new AdminGroup(authority: 'GROUP_ADMIN').save(flush: true)
+		def companyRole = new CompanyUserGroup(authority: 'GROUP_COMPANY').save(flush: true)
+		
 		String password = springSecurityService.encodePassword('password')
-		def testUser = new User(username: 'me', enabled: true, password: password)
+		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
 		
-		UserAuthority.create testUser, adminRole, true
+		PrincipalAuthority.create testUser, adminRole, true
   
-		assert User.count() == 1
+		assert Principal.count() == 1
 		assert Authority.count() == 2
-		assert UserAuthority.count() == 1
+		assert PrincipalAuthority.count() == 1
 		
 		def type1 = new AddressType(code:'Home', label:'Home Address', description:'Home Address')
 		type1.save(flush:true)
@@ -57,7 +61,7 @@ class BootStrap {
 		
 		//register User
 		password = springSecurityService.encodePassword('password')
-		def user1 = new User(username: 'mp', enabled: false, password: password)
+		def user1 = new Principal(username: 'mp', enabled: false, password: password)
 		user1.save(flush:true)
 		
 		def partyUser = new PartyUser(lastname:'Piche',firstname:'Myrko',email:'mp@mr-k.org',principal:user1).save(flush:true)
@@ -65,6 +69,11 @@ class BootStrap {
 		//afterEmail confirmation enable user
 		partyUser.principal.setEnabled true
 		partyUser.save()	
+		
+		List userIds = [partyUser.id]
+		
+		partyService.addUsersToCompany(partyCompany1.id,userIds)
+		
 		
   
     }

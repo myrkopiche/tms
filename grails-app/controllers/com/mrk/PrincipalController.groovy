@@ -1,6 +1,6 @@
 package com.mrk
 
-class UserController {
+class PrincipalController {
 	def springSecurityService
 	def partyService
 	
@@ -8,7 +8,7 @@ class UserController {
 	
 	
     def index = {
-		User user = User.get(springSecurityService.principal.id)
+		Principal user = Principal.get(springSecurityService.principal.id)
 		def p = PartyUser.findByPrincipal(user)
 		println p
 		
@@ -26,17 +26,17 @@ class UserController {
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [userInstanceList: User.list(params), userInstanceTotal: User.count()]
+        [userInstanceList: Principal.list(params), userInstanceTotal: Principal.count()]
     }
 
     def create = {
-        def userInstance = new User()
+        def userInstance = new Principal()
         userInstance.properties = params
         return [userInstance: userInstance]
     }
 
     def save = {
-        def userInstance = new User(params)
+        def userInstance = new Principal(params)
         if (userInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
             redirect(action: "show", id: userInstance.id)
@@ -47,7 +47,7 @@ class UserController {
     }
 
     def show = {
-        def userInstance = User.get(params.id)
+        def userInstance = Principal.get(params.id)
         if (!userInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
             redirect(action: "list")
@@ -58,7 +58,7 @@ class UserController {
     }
 
     def edit = {
-        def userInstance = User.get(params.id)
+        def userInstance = Principal.get(params.id)
         if (!userInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
             redirect(action: "list")
@@ -69,7 +69,7 @@ class UserController {
     }
 
     def update = {
-        def userInstance = User.get(params.id)
+        def userInstance = Principal.get(params.id)
         if (userInstance) {
             if (params.version) {
                 def version = params.version.toLong()
@@ -96,7 +96,7 @@ class UserController {
     }
 
     def delete = {
-        def userInstance = User.get(params.id)
+        def userInstance = Principal.get(params.id)
         if (userInstance) {
             try {
                 userInstance.delete(flush: true)

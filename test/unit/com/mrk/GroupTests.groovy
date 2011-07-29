@@ -2,7 +2,7 @@ package com.mrk
 
 import grails.test.*
 
-class UserControllerTests extends ControllerUnitTestCase {
+class GroupTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
     }
