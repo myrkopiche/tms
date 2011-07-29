@@ -87,4 +87,13 @@ log4j = {
            'net.sf.ehcache.hibernate'
 
     warn   'org.mortbay.log'
+	
+	debug 'grails.app'
 }
+
+// Added by the Spring Security Core plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.mrk.User'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.mrk.UserAuthority'
+grails.plugins.springsecurity.authority.className = 'com.mrk.Authority'
+grails.plugins.springsecurity.requestMap.className = 'com.mrk.Requestmap'
+grails.plugins.springsecurity.securityConfigType = 'Requestmap'

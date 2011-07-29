@@ -1,5 +1,4 @@
 import org.hibernate.validator.Email;
-
 import com.mrk.AccountType;
 import com.mrk.AddressType;
 import com.mrk.Party;
@@ -10,8 +9,8 @@ import com.mrk.PhoneType;
 import com.mrk.Type;
 import com.mrk.Address;
 import com.mrk.Authority
-import com.mrk.User
-import com.mrk.UserAuthority
+import com.mrk.User;
+import com.mrk.UserAuthority;
 
 class BootStrap {
 	def springSecurityService
@@ -65,18 +64,7 @@ class BootStrap {
 		
 		//afterEmail confirmation enable user
 		partyUser.principal.setEnabled true
-		partyUser.save()
-		
-		
-		
-		
-		
-		
-		
-		
-			
-		
-		
+		partyUser.save()	
 		
   
     }
