@@ -24,7 +24,7 @@ class PrincipalAuthority implements Serializable {
 	}
 
 	static PrincipalAuthority get(long userId, long authorityId) {
-		find 'from UserAuthority where user.id=:userId and authority.id=:authorityId',
+		find 'from PrincipalAuthority where user.id=:userId and authority.id=:authorityId',
 			[userId: userId, authorityId: authorityId]
 	}
 
@@ -38,11 +38,11 @@ class PrincipalAuthority implements Serializable {
 	}
 
 	static void removeAll(Principal user) {
-		executeUpdate 'DELETE FROM UserAuthority WHERE user=:user', [user: user]
+		executeUpdate 'DELETE FROM PrincipalAuthority WHERE user=:user', [user: user]
 	}
 
 	static void removeAll(Authority authority) {
-		executeUpdate 'DELETE FROM UserAuthority WHERE authority=:authority', [authority: authority]
+		executeUpdate 'DELETE FROM PrincipalAuthority WHERE authority=:authority', [authority: authority]
 	}
 
 	static mapping = {
