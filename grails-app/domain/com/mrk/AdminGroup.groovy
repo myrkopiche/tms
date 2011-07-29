@@ -1,6 +1,6 @@
 package com.mrk
 
-class AdminGroup extends Authority {
+class AdminGroup extends Group {
 	
 	static mapping = {
 		discriminator "ADMIN"

@@ -3,9 +3,8 @@ package com.mrk
 class Authority {
 
 	String authority	
-	
+	static hasMany= [groups:Group]
 	static mapping = {
-		discriminator column: [name:'group_type', length:32]
 		cache true
 	}
 

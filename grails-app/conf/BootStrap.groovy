@@ -1,8 +1,7 @@
 import org.hibernate.validator.Email;
 import com.mrk.AccountType;
 import com.mrk.AddressType;
-import com.mrk.AdminGroup;
-import com.mrk.CompanyUserGroup;
+
 import com.mrk.Party;
 import com.mrk.PartyUser;
 import com.mrk.PartyCompany;
@@ -20,8 +19,13 @@ class BootStrap {
 	
     def init = { servletContext ->
 		
-		def adminRole = new AdminGroup(authority: 'GROUP_ADMIN').save(flush: true)
-		def companyRole = new CompanyUserGroup(authority: 'GROUP_COMPANY').save(flush: true)
+		
+		def adminRole = new Authority(authority: 'admin').save(flush: true)
+		/*new Authority(authority: 'admin.company.view').save(flush: true)
+		new Authority(authority: 'admin.company.create').save(flush: true)
+		new Authority(authority: 'admin.company.update').save(flush: true)
+		new Authority(authority: 'admin.company.delete').save(flush: true)
+		*/
 		
 		String password = springSecurityService.encodePassword('password')
 		def testUser = new Principal(username: 'me', enabled: true, password: password)
