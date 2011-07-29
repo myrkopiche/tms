@@ -15,7 +15,8 @@ class PrincipalController {
 		//find companies
 		def companies = partyService.getAdministrativeCompanies()
 		companies.each{
-			partyService.saveAdministrativeCompany(it)
+			//partyService.saveAdministrativeCompany(it)
+			partyService.getUsersForCompany(it.id)
 		}
 		
 		

@@ -10,7 +10,7 @@ class Requestmap {
 	}
 
 	static constraints = {
-		url blank: false, unique: true
+		url blank: false, unique: false
 		configAttribute blank: false
 	}
 }

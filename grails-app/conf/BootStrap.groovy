@@ -2,6 +2,7 @@ import org.hibernate.validator.Email;
 import com.mrk.AccountType;
 import com.mrk.AddressType;
 
+import com.mrk.CompanyUserGroup;
 import com.mrk.Party;
 import com.mrk.PartyUser;
 import com.mrk.PartyCompany;
@@ -24,27 +25,46 @@ class BootStrap {
 		
 		//define authority
 		def adminRole = new Authority(authority: 'ROLE_ADMIN').save()
+		def userRole = new Authority(authority: 'ROLE_USER').save()
 		new Authority(authority: 'ROLE_COMPANY_VIEW').save()
-		new Authority(authority: 'ROLE_COMPANY_CREATE').save()
+		def auth1 =new Authority(authority: 'ROLE_COMPANY_CREATE').save()
 		new Authority(authority: 'ROLE_COMPANY_UPDATE').save()
 		new Authority(authority: 'ROLE_COMPANY_DELETE').save()
 		
 		//define requestmap
 		new Requestmap(url: '/secure/*', configAttribute: 'ROLE_ADMIN').save()
+		//new Requestmap(url: '/requestmap/create', configAttribute: 'ROLE_ADMIN').save()
+		new Requestmap(url: '/requestmap/create', configAttribute: 'ROLE_COMPANY_CREATE').save()
+		
+		def group1 = new CompanyUserGroup(name:'GROUP_COMPANY')
+		group1.addToAuthorities(auth1).save()
 		
 		
 		String password = springSecurityService.encodePassword('password')
 		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
 		
-		PrincipalAuthority.create testUser, adminRole, true
+		PrincipalAuthority.create testUser, userRole, true
+		
+		
+		//create company
+		def accType = new AccountType(type:'FREE',name:'Free Account',description:'This type of account is good for trial').save(flush:true)
+		def partyCompany1 = new PartyCompany(email:'mp@wlab.ca',name:'wlab',enable:false,accountType:accType).save(flush:true)
+		partyCompany1.saveAdministrativeCompany()
+		
+		def partyUser = new PartyUser(lastname:'Piche',firstname:'Myrko',email:'mp@mr-k.org',principal:testUser).save(flush:true)
+		partyUser.principal.setEnabled true
+		partyUser.save()
+		
+		List userIds = [partyUser.id]
+		partyService.addUsersToCompany(partyCompany1.id,userIds)
 		
 		/*
 		assert Principal.count() == 1
 		assert Authority.count() == 2
 		assert PrincipalAuthority.count() == 1
 		*/
-		
+		/*
 		def type1 = new AddressType(code:'Home', label:'Home Address', description:'Home Address')
 		type1.save(flush:true)
 		
@@ -85,7 +105,7 @@ class BootStrap {
 		List userIds = [partyUser.id]
 		
 		partyService.addUsersToCompany(partyCompany1.id,userIds)
-		
+		*/
   
     }
     def destroy = {
