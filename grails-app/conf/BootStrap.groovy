@@ -21,21 +21,23 @@ class BootStrap {
 		
 		
 		def adminRole = new Authority(authority: 'admin').save(flush: true)
-		/*new Authority(authority: 'admin.company.view').save(flush: true)
+		new Authority(authority: 'admin.company.view').save(flush: true)
 		new Authority(authority: 'admin.company.create').save(flush: true)
 		new Authority(authority: 'admin.company.update').save(flush: true)
 		new Authority(authority: 'admin.company.delete').save(flush: true)
-		*/
+		
 		
 		String password = springSecurityService.encodePassword('password')
 		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
 		
-		PrincipalAuthority.create testUser, adminRole, true
-  
+		//PrincipalAuthority.create testUser, adminRole, true
+		
+		/*
 		assert Principal.count() == 1
 		assert Authority.count() == 2
 		assert PrincipalAuthority.count() == 1
+		*/
 		
 		def type1 = new AddressType(code:'Home', label:'Home Address', description:'Home Address')
 		type1.save(flush:true)
@@ -77,7 +79,6 @@ class BootStrap {
 		List userIds = [partyUser.id]
 		
 		partyService.addUsersToCompany(partyCompany1.id,userIds)
-		
 		
   
     }

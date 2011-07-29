@@ -8,6 +8,7 @@ class Principal {
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
+	static hasMany= [groups:Group]
 
 	static constraints = {
 		username blank: false, unique: true
