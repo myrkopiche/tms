@@ -20,6 +20,15 @@ class Principal {
 	}
 
 	Set<Authority> getAuthorities() {
-		PrincipalAuthority.findAllByUser(this).collect { it.authority } as Set
+		//println 'hello'	
+		//this.groups.collect {it.authorities } as Set
+		def auth = []
+		this.groups.each{
+			it.authorities.each{
+				auth.add(it)
+			}
+		}
+		return auth as Set
+		//GroupAuthority.findAllByGroup(this).collect { it.authority } as Set
 	}
 }

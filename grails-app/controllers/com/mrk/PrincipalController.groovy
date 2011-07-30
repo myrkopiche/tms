@@ -8,9 +8,12 @@ class PrincipalController {
 	
 	
     def index = {
+		
 		Principal user = Principal.get(springSecurityService.principal.id)
 		def p = PartyUser.findByPrincipal(user)
-		println p
+		println user.getAuthorities()
+		springSecurityService.clearCachedRequestmaps()
+		println "y"
 		
 		//find companies
 		def companies = partyService.getAdministrativeCompanies()

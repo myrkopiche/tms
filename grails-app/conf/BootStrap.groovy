@@ -13,7 +13,7 @@ import com.mrk.Type;
 import com.mrk.Address;
 import com.mrk.Authority
 import com.mrk.Principal;
-import com.mrk.PrincipalAuthority;
+import com.mrk.GroupAuthority;
 
 class BootStrap {
 	def springSecurityService
@@ -26,26 +26,32 @@ class BootStrap {
 		//define authority
 		def adminRole = new Authority(authority: 'ROLE_ADMIN').save()
 		def userRole = new Authority(authority: 'ROLE_USER').save()
-		new Authority(authority: 'ROLE_COMPANY_VIEW').save()
+		def auth0 = new Authority(authority: 'ROLE_COMPANY_VIEW').save()
 		def auth1 =new Authority(authority: 'ROLE_COMPANY_CREATE').save()
-		new Authority(authority: 'ROLE_COMPANY_UPDATE').save()
-		new Authority(authority: 'ROLE_COMPANY_DELETE').save()
+		def auth2 = new Authority(authority: 'ROLE_COMPANY_UPDATE').save()
+		def auth3 = new Authority(authority: 'ROLE_COMPANY_DELETE').save()
 		
 		//define requestmap
 		new Requestmap(url: '/secure/*', configAttribute: 'ROLE_ADMIN').save()
 		//new Requestmap(url: '/requestmap/create', configAttribute: 'ROLE_ADMIN').save()
 		new Requestmap(url: '/requestmap/create', configAttribute: 'ROLE_COMPANY_CREATE').save()
+		new Requestmap(url: '/requestmap/edit', configAttribute: 'ROLE_COMPANY_UPDATE').save()
+		new Requestmap(url: '/requestmap/show', configAttribute: 'ROLE_COMPANY_VIEW').save()
 		
 		def group1 = new CompanyUserGroup(name:'GROUP_COMPANY')
-		group1.addToAuthorities(auth1).save()
+		group1.addToAuthorities(auth1)
+		.addToAuthorities(adminRole)
+		.addToAuthorities(auth0)
+		.save()
 		
 		
 		String password = springSecurityService.encodePassword('password')
 		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
+		group1.addToPrincipals(testUser)
 		
-		PrincipalAuthority.create testUser, userRole, true
-		
+		GroupAuthority.create group1, auth1, true
+		/*
 		
 		//create company
 		def accType = new AccountType(type:'FREE',name:'Free Account',description:'This type of account is good for trial').save(flush:true)
