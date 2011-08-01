@@ -17,6 +17,7 @@ import com.mrk.GroupAuthority;
 class BootStrap {
 	def springSecurityService
 	def partyService
+	def registrationService
 	
     def init = { servletContext ->
 		
@@ -44,6 +45,19 @@ class BootStrap {
 		group1.addToPrincipals(testUser)
 		
 		GroupAuthority.create group1, auth1, true
+		
+		//testing registration
+		def prs = [:]
+		prs.username = 'mp'
+		prs.password = 'mp'
+		prs.firstname = 'myrko'
+		prs.lastname = 'piche'
+		prs.email = 'mp@mp.com'
+		
+		registrationService.registerUser(prs)
+		
+		
+		
 		/*
 		
 		//create company

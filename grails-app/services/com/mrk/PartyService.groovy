@@ -22,26 +22,7 @@ class PartyService {
 		log.debug("getUsersForCompany() successfull and return users = ${result}");
 		return result
 	}
-	/*
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-	public List<PartyUserVO> getUsersForCompany(Long companyId) {
-		
-		Map<String, Object> params = new HashMap<String, Object>(1);
-		params.put("companyId", companyId);
-		
-		List<Party> parties = partyDao.findByNamedQueryAndNamedParams(IPartyDao.FIND_USERS_FOR_COMPANY, params);
-		
-		List<PartyUserVO> result = new ArrayList<PartyUserVO>(parties.size());
-		
-		for (Iterator<Party> iterator = parties.iterator(); iterator.hasNext();) {
-			PartyUser party =  (PartyUser) iterator.next();
-			result.add((PartyUserVO) mapper.map(party, PartyUserVO.class));
-		}
-		
-		return result;
-		
-	}
-	*/
+	
 	
 	@Transactional(readOnly = true)
 	public List getAdministrativeCompanies(){
