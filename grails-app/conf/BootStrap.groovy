@@ -8,7 +8,6 @@ import com.mrk.PartyUser;
 import com.mrk.PartyCompany;
 import com.mrk.Phone;
 import com.mrk.PhoneType;
-import com.mrk.Requestmap;
 import com.mrk.Type;
 import com.mrk.Address;
 import com.mrk.Authority
@@ -24,23 +23,17 @@ class BootStrap {
 		
 		
 		//define authority
-		def adminRole = new Authority(authority: 'ROLE_ADMIN').save()
+		def adminRole = new Authority(authority: 'ROLE_TMS_ADMIN').save()
 		def userRole = new Authority(authority: 'ROLE_USER').save()
 		def auth0 = new Authority(authority: 'ROLE_COMPANY_VIEW').save()
 		def auth1 =new Authority(authority: 'ROLE_COMPANY_CREATE').save()
 		def auth2 = new Authority(authority: 'ROLE_COMPANY_UPDATE').save()
 		def auth3 = new Authority(authority: 'ROLE_COMPANY_DELETE').save()
 		
-		//define requestmap
-		new Requestmap(url: '/secure/*', configAttribute: 'ROLE_ADMIN').save()
-		//new Requestmap(url: '/requestmap/create', configAttribute: 'ROLE_ADMIN').save()
-		new Requestmap(url: '/requestmap/create', configAttribute: 'ROLE_COMPANY_CREATE').save()
-		new Requestmap(url: '/requestmap/edit', configAttribute: 'ROLE_COMPANY_UPDATE').save()
-		new Requestmap(url: '/requestmap/show', configAttribute: 'ROLE_COMPANY_VIEW').save()
-		
+
 		def group1 = new CompanyUserGroup(name:'GROUP_COMPANY')
 		group1.addToAuthorities(auth1)
-		.addToAuthorities(adminRole)
+		.addToAuthorities(userRole)
 		.addToAuthorities(auth0)
 		.save()
 		

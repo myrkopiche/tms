@@ -1,5 +1,6 @@
 package com.mrk
-
+import grails.plugins.springsecurity.Secured
+@Secured(['ROLE_TMS_ADMIN'])
 class PrincipalController {
 	def springSecurityService
 	def partyService
