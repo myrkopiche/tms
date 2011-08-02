@@ -47,6 +47,7 @@ class BootStrap {
 		GroupAuthority.create group1, auth1, true
 		
 		//testing registration
+		/*
 		def prs = [:]
 		prs.username = 'mp'
 		prs.password = 'mp'
