@@ -98,3 +98,22 @@ grails.plugins.springsecurity.authority.className = 'com.mrk.Authority'
 //grails.plugins.springsecurity.requestMap.className = 'com.mrk.Requestmap'
 grails.plugins.springsecurity.securityConfigType = 'Annotation'
 //grails.plugins.springsecurity.rejectIfNoRule = true
+
+
+jasypt {
+	password = "tR54S98UJIO90IKOKKL-09-1222-09-01"
+	keyObtentionIterations = 1000
+}
+
+grails {
+	mail {
+	  host = "smtp.gmail.com"
+	  port = 465
+	  username = "myrkopiche@gmail.com"
+	  password = "jimbo21"
+	  props = ["mail.smtp.auth":"true",
+			   "mail.smtp.socketFactory.port":"465",
+			   "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+			   "mail.smtp.socketFactory.fallback":"false"]
+	}
+}

@@ -52,7 +52,7 @@ class BootStrap {
 		prs.password = 'mp'
 		prs.firstname = 'myrko'
 		prs.lastname = 'piche'
-		prs.email = 'mp@mp.com'
+		prs.email = 'mp@mr-k.org'
 		
 		registrationService.registerUser(prs)
 		

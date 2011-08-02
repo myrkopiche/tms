@@ -5,6 +5,10 @@ class Registration {
 	Date dateCreated
 	PartyUser partyUser
 	
+	static mapping = {
+		
+	}
+	
     static constraints = {
     }
 }

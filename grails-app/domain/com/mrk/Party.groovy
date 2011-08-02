@@ -1,5 +1,6 @@
 package com.mrk
 
+
 class Party {
 	
 	String email
@@ -10,6 +11,7 @@ class Party {
 		discriminator "party"
 	}
 	
+
 
 	
 	def phones() {

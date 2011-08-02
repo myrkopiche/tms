@@ -6,8 +6,8 @@ import sun.misc.BASE64Decoder;
 
 class SecureCodec{
 	
-	static BASE64Decoder decoder = new BASE64Decoder()
-    static BASE64Encoder encoder = new Base64Encoder()
+	//static BASE64Decoder decoder = new BASE64Decoder()
+    //static BASE64Encoder encoder = new Base64Encoder()
 
 	
 }
