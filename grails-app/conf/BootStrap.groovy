@@ -40,7 +40,7 @@ class BootStrap {
 		
 		
 		String password = springSecurityService.encodePassword('password')
-		def testUser = new Principal(username: 'me', enabled: true, password: password)
+		def testUser = new Principal(username: 'me', enabled: false, password: password)
 		testUser.save(flush: true)
 		group1.addToPrincipals(testUser)
 		

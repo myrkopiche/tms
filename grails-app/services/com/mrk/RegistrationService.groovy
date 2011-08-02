@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 class RegistrationService {
 	def springSecurityService
+	def tmsEncryptionService
     def emailConfirmationUrl = "http://localhost:8080/tms/registration/confirmation"
 	
 	@Transactional(readOnly = false)
@@ -36,17 +37,25 @@ class RegistrationService {
 		log.debug("Encrypted email: " + encryptedEmail);
 		log.debug("Encrypted token: " + encryptedToken);
 		
-		String email = new String(encryptedEmail.decodeURL().decodeBase64())
-		String token = new String(encryptedToken.decodeURL().decodeBase64())
+		String email = tmsEncryptionService.decrypt(encryptedEmail).decodeURL()
+		String token = tmsEncryptionService.decrypt(encryptedToken).decodeURL()
+		PartyUser pu = PartyUser.findByEmail(email)
+		Registration reg = Registration.findByRegistrationTokenAndPartyUser(token,pu)
+		Principal principal = reg.partyUser.principal
+		principal.setEnabled(true)
+		principal.save()
 		
+		//delete registration
+		reg.delete()
+	
 		//Registration registration = Registration.findByRegistrationTokenAndPartyUser()
 		
 	}
 	
 	private void sendConfirmationEmail(final Registration registration){
 		
-		def emailEncrypt = registration.partyUser.email.encodeAsBase64().encodeAsURL()
-		def tokenEncrypt = registration.registrationToken.encodeAsBase64().encodeAsURL()	
+		def emailEncrypt = tmsEncryptionService.encrypt(registration.partyUser.email).encodeAsURL()
+		def tokenEncrypt = tmsEncryptionService.encrypt(registration.registrationToken).encodeAsURL()	
 		//def decodedEmail = new String(emailEncrypt.decodeURL().decodeBase64())	
 		
 		sendMail {

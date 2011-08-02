@@ -1,5 +1,6 @@
 package com.mrk
 
+import org.jasypt.util.text.BasicTextEncryptor;
 
 class Party {
 	
@@ -10,9 +11,6 @@ class Party {
 		discriminator column: [name:'discriminator', length:50]
 		discriminator "party"
 	}
-	
-
-
 	
 	def phones() {
 		return phones.collect{}
