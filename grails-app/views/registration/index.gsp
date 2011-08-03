@@ -7,7 +7,23 @@
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
-        <g:form controller="registration">
+
+			<g:hasErrors>
+    			<g:eachError>	
+    			<div class="errors">
+                	<p>${it.defaultMessage}</p>
+            	</div>
+    			</g:eachError>
+    			
+			</g:hasErrors>
+			
+            <g:hasErrors bean="${pr}">
+            	<div class="errors">
+                	<g:renderErrors bean="${pr}" as="list" />
+            	</div>
+            </g:hasErrors>
+    
+        <g:form controller="registration" action="registrationstep1">
         	<label for="firstname">firstname</label>
         	<input type="text" name="firstname" />
         	<br/>
@@ -30,7 +46,7 @@
         	<label for="confirmpassword">Confirm password</label>
         	<input type="password" name="confirmpassword" />
         	
-        	<g:actionSubmit value="Register" action="registrationstep1"/>
+        	<g:submitButton name="Register" value="Register" />
         </g:form>
     </body>
 </html>

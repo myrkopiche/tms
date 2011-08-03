@@ -28,9 +28,19 @@ class RegistrationController {
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def registrationstep1 ={
-		def reg = new Registration(params)
-		println(reg)
-		render "yeah"
+		//def reg = new Registration(params.properties)
+		params.password = null
+		Principal pr = new Principal(params)
+		pr.validate()
+		PartyUser pu = new PartyUser(params)
+	    pu.setPrincipal(pr)		
+		pu.validate()
+		if( pu.hasErrors() || pr.hasErrors() ) {
+			render(view: "index", model:[pu:pu,pr:pr])
+		}
+		
+		
+		//render params
 		/*
 		if (!userInstance.hasErrors()){
 			render "errror"
