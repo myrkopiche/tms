@@ -8,23 +8,28 @@ class RegistrationService {
     def emailConfirmationUrl = "http://localhost:8080/tms/registration/confirmation"
 	
 	@Transactional(readOnly = false)
-    public void registerUser(PartyUser pu) {
-		log.debug("About to register a new user: ${pu}");
+    public void registerUser(params) {
+		log.debug("About to register a new user: ${params}");
 
 		// Create the principal
-	
-		Principal userInstance = new Principal()
-		userInstance = pu.principal
+		def passwordEncrypt = springSecurityService.encodePassword(params.password)
+		Principal userInstance = new Principal(params)
 		userInstance.setEnabled(false)
-		userInstance.setPassword(springSecurityService.encodePassword(pu.principal.password)) 
-		userInstance.save()
+		userInstance.setPassword(passwordEncrypt)
+		userInstance.setConfirm(passwordEncrypt)
+		if(!userInstance.save(flush:true) )
+		{
+			println 'errors'
+		}
 		
-		
-		PartyUser partyUser = new PartyUser()
-		partyUser = pu
+		println userInstance.confirm
+		println userInstance.password
+		/*
+		PartyUser partyUser = new PartyUser(params)
 		partyUser.setPrincipal(userInstance)
 		partyUser.save()
-		
+		*/
+		/*
 		Registration reg = new Registration()
 		reg.setPartyUser(partyUser)
 		reg.setRegistrationToken(UUID.randomUUID().toString())
@@ -32,8 +37,8 @@ class RegistrationService {
 		
 		//send email
 		this.sendConfirmationEmail reg
-
-		log.debug("Successfully register user = ${pu}");
+*/
+		log.debug("Successfully register user = ${params}");
 		
     }
 	

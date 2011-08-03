@@ -46,6 +46,12 @@ class BootStrap {
 		
 		GroupAuthority.create group1, auth1, true
 		
+
+		def pu = [username:'mp',password:'passs21',confirm:'passs21',firstname:'firstname',lastname:'lastname',email:'mp@mr-k.org']
+		registrationService.registerUser(pu)
+		
+		println 'jim'
+		
 		//testing registration
 		/*
 		def prs = [:]

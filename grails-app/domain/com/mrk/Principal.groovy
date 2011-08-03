@@ -4,6 +4,7 @@ class Principal {
 
 	String username
 	String password
+	String confirm
 	boolean enabled
 	boolean accountExpired
 	boolean accountLocked
@@ -16,11 +17,10 @@ class Principal {
 	static constraints = {
 		username blank: false, unique: true		
 		password(blank: false, nullable: false, size:5..20, validator: {password, obj ->
-			def confirm = obj.properties['confirm']
-			if(confirm == null) return true // skip matching password validation (only important when setting/resetting pass)
-			confirm == password ? true : ['invalid.matchingpasswords']
-		})
-		
+         def password2 = obj.properties['confirm']
+         if(password2 == null) return true // skip matching password validation (only important when setting/resetting pass)
+         password2 == password ? true : ['invalid.matchingpasswords']
+     })	
 		
 	}
 
