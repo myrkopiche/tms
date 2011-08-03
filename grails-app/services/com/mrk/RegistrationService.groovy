@@ -17,27 +17,21 @@ class RegistrationService {
 		userInstance.setEnabled(false)
 		userInstance.setPassword(passwordEncrypt)
 		userInstance.setConfirm(passwordEncrypt)
-		if(!userInstance.save(flush:true) )
-		{
-			println 'errors'
-		}
+		userInstance.save(flush:true)
 		
-		println userInstance.confirm
-		println userInstance.password
-		/*
 		PartyUser partyUser = new PartyUser(params)
 		partyUser.setPrincipal(userInstance)
 		partyUser.save()
-		*/
-		/*
+		
 		Registration reg = new Registration()
 		reg.setPartyUser(partyUser)
 		reg.setRegistrationToken(UUID.randomUUID().toString())
 		reg.save()
-		
+			
 		//send email
 		this.sendConfirmationEmail reg
-*/
+		
+		
 		log.debug("Successfully register user = ${params}");
 		
     }

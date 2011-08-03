@@ -10,7 +10,7 @@ class RegistrationController {
 	def registrationService
 	def tmsEncryptionService
 	
-	static allowedMethods = [confirmation:'GET',index:'GET']
+	static allowedMethods = [confirmation:'GET',index:'GET',registrationstep1:'POST']
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def confirmation = { 
@@ -26,21 +26,24 @@ class RegistrationController {
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def registrationstep1 ={
-		Principal principal = new Principal(params['principal'])
+		Principal principal = new Principal(params)
 		principal.validate()
-		PartyUser partyuser = new PartyUser(params['partyuser'])
+		PartyUser partyuser = new PartyUser(params)
 	    partyuser.setPrincipal(principal)	
 		partyuser.validate()
 		
-		println partyuser.principal.confirm
-		
-		if( partyuser.hasErrors() || partyuser.principal.hasErrors()   ) {
+		if( partyuser.hasErrors() || principal.hasErrors()   ) {
 			render(view: "index", model:[partyuser:partyuser,principal:principal])		
 		}
 		else
 		{
-			//registrationService.registerUser(partyuser)
+			registrationService.registerUser(params)
 		}
+		
+	}
+	
+	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+	def companyRegistration={
 		
 	}
 		

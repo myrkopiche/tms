@@ -16,7 +16,7 @@ class Principal {
 	
 	static constraints = {
 		username blank: false, unique: true		
-		password(blank: false, nullable: false, size:5..20, validator: {password, obj ->
+		password(blank: false, nullable: false, size:5..250, validator: {password, obj ->
          def password2 = obj.properties['confirm']
          if(password2 == null) return true // skip matching password validation (only important when setting/resetting pass)
          password2 == password ? true : ['invalid.matchingpasswords']
