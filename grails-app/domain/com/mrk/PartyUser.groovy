@@ -12,7 +12,7 @@ class PartyUser extends Party{
 	}
 	
     static constraints = {
-		lastname(maxsize:256,nullable:false)
-		firstname(maxsize:256,nullable:false)
+		lastname(maxsize:256,nullable:false,blank:false)
+		firstname(maxsize:256,nullable:false,blank:false)
     }
 }

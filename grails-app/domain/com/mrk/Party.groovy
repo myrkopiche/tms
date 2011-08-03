@@ -7,6 +7,10 @@ class Party {
 	String email
 	static hasMany= [phones:Phone,addresses:Address,websites:Website]
 	
+	static constraints = {
+		email blank: false, nullable:false,email:true
+	}
+	
 	static mapping = {
 		discriminator column: [name:'discriminator', length:50]
 		discriminator "party"
@@ -24,7 +28,5 @@ class Party {
 		return websites.collect { }
 	}
 	
-    static constraints = {
-		email(maxsize:256,email:true)
-    }
+    
 }

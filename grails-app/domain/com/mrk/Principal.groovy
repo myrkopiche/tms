@@ -9,10 +9,19 @@ class Principal {
 	boolean accountLocked
 	boolean passwordExpired
 	static hasMany= [groups:Group]
-
+	
+	
+	static transients = ['confirm']
+	
 	static constraints = {
-		username blank: false, unique: true
-		password blank: false
+		username blank: false, unique: true		
+		password(blank: false, nullable: false, size:5..20, validator: {password, obj ->
+			def confirm = obj.properties['confirm']
+			if(confirm == null) return true // skip matching password validation (only important when setting/resetting pass)
+			confirm == password ? true : ['invalid.matchingpasswords']
+		})
+		
+		
 	}
 
 	static mapping = {

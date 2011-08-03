@@ -14,42 +14,35 @@ class RegistrationController {
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def confirmation = { 
-		println params.tk
-		println params.email
 		registrationService.confirmRegistration(params.tk,params.email)
 		render "The registration is completed, you can now log in the application."	
 	}
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def index ={
-		
+
 	}
 	
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def registrationstep1 ={
-		//def reg = new Registration(params.properties)
-		params.password = null
-		Principal pr = new Principal(params)
-		pr.validate()
-		PartyUser pu = new PartyUser(params)
-	    pu.setPrincipal(pr)		
-		pu.validate()
-		if( pu.hasErrors() || pr.hasErrors() ) {
-			render(view: "index", model:[pu:pu,pr:pr])
-		}
+		Principal principal = new Principal(params['principal'])
+		principal.validate()
+		PartyUser partyuser = new PartyUser(params['partyuser'])
+	    partyuser.setPrincipal(principal)	
+		partyuser.validate()
 		
+		println partyuser.principal.confirm
 		
-		//render params
-		/*
-		if (!userInstance.hasErrors()){
-			render "errror"
+		if( partyuser.hasErrors() || partyuser.principal.hasErrors()   ) {
+			render(view: "index", model:[partyuser:partyuser,principal:principal])		
 		}
-		*/
+		else
+		{
+			//registrationService.registerUser(partyuser)
+		}
 		
 	}
-	
-	
-	
+		
 	
 }
