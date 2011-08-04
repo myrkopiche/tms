@@ -21,6 +21,17 @@ class BootStrap {
 	
     def init = { servletContext ->
 		
+		//create account type
+		new AccountType(type:'FREE',name:'Free Account',description:'This type of account is good for trial').save(flush:true)
+		new AccountType(type:'SILVER',name:'Silver Account',description:'This type of account is basic account').save(flush:true)
+		
+		//create address type
+		new AddressType(code:'Home', label:'Home Address', description:'Home Address').save(flush:true)
+		new AddressType(code:'Billing', label:'Billing Address', description:'Billing Address').save(flush:true)
+		
+		//create phone type
+		new PhoneType(code:'Home',label:'Home Phone',description:'Home Phone' ).save(flush:true)
+		
 		
 		
 		//define authority
@@ -46,7 +57,8 @@ class BootStrap {
 		
 		GroupAuthority.create group1, auth1, true
 		
-
+		def pu = new PartyUser(firstname:'firstname',lastname:'lastname',email:'mp@mr-k.org',principal:testUser)
+		pu.save()
 		//def pu = [username:'mp',password:'passs21',confirm:'passs21',firstname:'firstname',lastname:'lastname',email:'mp@mr-k.org']
 		//registrationService.registerUser(pu)
 		

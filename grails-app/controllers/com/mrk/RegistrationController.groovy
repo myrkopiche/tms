@@ -9,8 +9,9 @@ class RegistrationController {
 	
 	def registrationService
 	def tmsEncryptionService
+	def springSecurityService
 	
-	static allowedMethods = [confirmation:'GET',index:'GET',registrationstep1:'POST']
+	static allowedMethods = [confirmation:'GET',index:'GET',registrationstep1:'POST',company:'GET',registerCompany:'POST']
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def confirmation = { 
@@ -43,9 +44,42 @@ class RegistrationController {
 	}
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
-	def companyRegistration={
+	def company={
+		List adl = AddressType.addressTypeList()		
+		println adl
+		[addresstype:adl]
+	}
+	
+	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+	def registerCompany={
+		Principal principal = new Principal()
+		String password = springSecurityService.encodePassword(params.password)
+		def pr = Principal.findByUsernameAndPassword(params.username,password)
+		
+		if(pr)
+		{
+			PartyCompany partyCompany = new PartyCompany(params)
+			partyCompany.validate()
+			
+			Address adr = new Address(params)
+			adr.validate()
+			
+			if( partyCompany.hasErrors() || adr.hasErrors()    ) {
+				render(view: "company", model:[principal:pr,address:adr,partycompany:partyCompany])
+			}
+		}
+		else //User not found need to register before
+		{
+			principal.errors.rejectValue('username', 'principal.username.password.notfound') 
+			//principal.errors.rejectValue('pa', 'principal.username.password.notfound')
+			render(view: "company", model:[principal:principal])
+		}
+		
+		
 		
 	}
+	
+	
 		
 	
 }

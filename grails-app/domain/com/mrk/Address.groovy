@@ -1,7 +1,7 @@
 package com.mrk
 
 class Address {
-	String name
+	String street
 	String province_state
 	String country
 	String zip
@@ -13,10 +13,10 @@ class Address {
 	
     static constraints = {
 		
-		name(maxSize:1024)
-		province_state(maxSize:256)
-		country(maxSize:256)
-		zip(maxSize:64)
+		street(maxSize:1024,blank:false)
+		province_state(maxSize:256,blank:false)
+		country(maxSize:256,blank:false)
+		zip(maxSize:64,blank:false)
 		unit(maxSize:128)
     }
 }

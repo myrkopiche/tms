@@ -13,7 +13,7 @@ class PartyCompany extends Party {
     }
 	
     static constraints = {
-		name(maxsize:1024,nullable:false)
+		name(maxsize:1024,nullable:false,unique:true,blank:false)
     }
 	
 	def saveAdministrativeCompany(){
