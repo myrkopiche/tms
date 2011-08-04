@@ -1,6 +1,8 @@
 package com.mrk
 
-class Type {
+import java.io.Serializable;
+
+class Type implements Serializable{
 	
 	String code
 	String label

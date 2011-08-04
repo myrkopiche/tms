@@ -36,6 +36,37 @@ class RegistrationService {
 		
     }
 	
+	@Transactional(readOnly = false)
+	public void registerCompany(Principal principal,PartyCompany partycompany) {
+		log.debug("About to register a new company: ${principal}");
+		/*
+		// Create the principal
+		def passwordEncrypt = springSecurityService.encodePassword(params.password)
+		Principal userInstance = new Principal(params)
+		userInstance.setEnabled(false)
+		userInstance.setPassword(passwordEncrypt)
+		userInstance.setConfirm(passwordEncrypt)
+		userInstance.save(flush:true)
+		
+		PartyUser partyUser = new PartyUser(params)
+		partyUser.setPrincipal(userInstance)
+		partyUser.save()
+		
+		Registration reg = new Registration()
+		reg.setPartyUser(partyUser)
+		reg.setRegistrationToken(UUID.randomUUID().toString())
+		reg.save()
+			
+		//send email
+		this.sendConfirmationEmail reg
+		
+		
+		log.debug("Successfully register user = ${params}");
+		*/
+	}
+	
+	
+	
 	public void confirmRegistration(String encryptedToken, String encryptedEmail)
 	{
 		log.debug("Encrypted email: " + encryptedEmail);

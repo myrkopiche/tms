@@ -1,6 +1,8 @@
 package com.mrk
 
-class Group {
+import java.io.Serializable;
+
+class Group implements Serializable{
 	
 	String name
 	static hasMany = [authorities:Authority,principals:Principal]

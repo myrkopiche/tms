@@ -58,7 +58,6 @@ class PartyService {
 			cug.save()			
 		}
 		log.debug("addUsersToCompany() successful");
-
 		
 		
 	}

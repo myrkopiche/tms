@@ -1,6 +1,7 @@
 package com.mrk
 
 import java.io.Serializable;
+import java.util.List;
 
 class AccountType implements Serializable{
 	
@@ -14,4 +15,9 @@ class AccountType implements Serializable{
 		name(maxsize:128,nullable:false)
 		description(maxsize:512,nullable:false)
     }
+	
+	static List accountTypeList(){
+		return AccountType.findAll() as List
+	}
+	
 }

@@ -7,87 +7,28 @@
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
-
-         <g:hasErrors bean="${partycompany}">
+    	<g:hasErrors bean="${principal}">
             	<div class="errors">
-                	<g:renderErrors bean="${partycompany}" as="list" />
+                	<g:renderErrors bean="${principal}" as="list" />
             	</div>
          </g:hasErrors>
-    	<g:hasErrors bean="${address}">
-            	<div class="errors">
-                	<g:renderErrors bean="${address}" as="list" />
-            	</div>
-         </g:hasErrors>
-    
+    ${accounttype}
 		<g:form action="company">
-			
-		
 			<fieldset>
-    		<legend>Company</legend>
-        	
-        	<div class="prop ${hasErrors(bean:partycompany,field:'name', 'errors')}">
-        		<label for="username">Company Name</label>
-        		<input type="text" name="name"  value="${fieldValue(bean:partycompany,field:'name')}" />
-        	</div>
-        	
-        	<div class="prop ${hasErrors(bean:partycompany,field:'email', 'errors')}">
-        		<label for="email">Company Email</label>
-        		<input type="text" name="email" value="${fieldValue(bean:partycompany,field:'email')}" />
-			</div>
-			<br/>
-			
-        	
-        	<g:select name="address.type" from="${addresstype}" 
-             value="${addresstype?.id}"
-          optionKey="id" />
-        	<br/>
-        	<div class="prop ${hasErrors(bean:address,field:'street', 'errors')}">
-        		<label for="username">Street</label>
-        		<input type="text" name="street"  value="${fieldValue(bean:address,field:'street')}" />
-        	</div>
-        	
-        	<br/>
-        	<div class="prop ${hasErrors(bean:address,field:'province_state', 'errors')}">
-        		<label for="province_state">Province</label>
-        		<input type="text" name="province_state"  value="${fieldValue(bean:address,field:'province_state')}" />
-        	</div>
-        	
-        	<br/>
-        	<div class="prop ${hasErrors(bean:address,field:'country', 'errors')}">
-        		<label for="country">Country</label>
-        		<input type="text" name="country"  value="${fieldValue(bean:address,field:'country')}" />
-        	</div>
-        	
-        	<br/>
-        	<div class="prop ${hasErrors(bean:address,field:'zip', 'errors')}">
-        		<label for="zip">Postal Code</label>
-        		<input type="text" name="zip"  value="${fieldValue(bean:address,field:'zip')}" />
-        	</div>
-        	
-        	<br/>
-        	<div class="prop ${hasErrors(bean:address,field:'unit', 'errors')}">
-        		<label for="unit">Unit</label>
-        		<input type="text" name="unit"  value="${fieldValue(bean:address,field:'unit')}" />
-        	</div>
-        	
-        	<br/>
-        	<!-- 
-        	<g:select name="phone.type" from="${['MOBILE','HOME', 'OFFICE','FAX']}" value="${fieldValue(bean:phone,field:'type')}"
-             noSelection="['':'- Phone Type-']"/>
-              -->
-             <br/>
-        	<div class="prop ${hasErrors(bean:phone,field:'local', 'errors')}">
-        		<label for="local">Local Area</label>
-        		<input type="text" name="local" size="3" maxlength="4"  value="${fieldValue(bean:phone,field:'local')}" />
-        		<input type="text" name="number" size="10" maxlength="10"  value="${fieldValue(bean:phone,field:'number')}" />
-        	</div>
-        	
-        	</fieldset>
-        	
-        	
-    		<g:submitButton name="step1" value="Back"></g:submitButton>
-    		<g:submitButton name="step3" value="Next"></g:submitButton>
-			</g:form>
+    		<legend>AccountType</legend>
+    			<g:each in="${accounttype}" var="account">
+    				<div style="padding-bottom:20px">
+     				<p>Name: ${account.name}</p>
+     				<p>Description: ${account.description}</p>
+     				<g:form action="company">
+     					<input type="hidden" name="accountId" value="${account.id}" />
+    					<g:submitButton name="step3" value="Choose"></g:submitButton>
+					</g:form>
+     				</div>
+				</g:each>
+    		</fieldset>
+		</g:form>
     
     </body>
 </html>
+

@@ -11,8 +11,8 @@ class Phone implements Serializable{
 	
 	
     static constraints = {		
-		number(maxSize:32)
-		local(maxSize:32)		
+		number(maxSize:32,blank:false)
+		local(maxSize:32,blank:false)		
     }
 	
 }
