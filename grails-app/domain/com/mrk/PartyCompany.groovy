@@ -1,6 +1,8 @@
 package com.mrk
 
-class PartyCompany extends Party {
+import java.io.Serializable;
+
+class PartyCompany extends Party implements Serializable {
 
 	String name
 	boolean administrativeCompany

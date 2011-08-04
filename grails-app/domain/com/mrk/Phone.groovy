@@ -1,6 +1,8 @@
 package com.mrk
 
-class Phone {
+import java.io.Serializable;
+
+class Phone implements Serializable{
     String number
 	String local
 	PhoneType type

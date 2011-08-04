@@ -1,6 +1,8 @@
 package com.mrk
 
-class Website {
+import java.io.Serializable;
+
+class Website implements Serializable{
 	
 	String url
 	WebsiteType type

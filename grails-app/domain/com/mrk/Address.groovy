@@ -1,6 +1,8 @@
 package com.mrk
 
-class Address {
+import java.io.Serializable;
+
+class Address implements Serializable{
 	String street
 	String province_state
 	String country

@@ -5,7 +5,7 @@ import org.jasypt.util.text.BasicTextEncryptor;
 import grails.plugins.springsecurity.Secured
 
 @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
-class RegistrationController {
+class RegistrationController implements Serializable {
 	
 	def registrationService
 	def tmsEncryptionService
@@ -43,12 +43,44 @@ class RegistrationController {
 		
 	}
 	
+	
+	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
-	def company={
-		List adl = AddressType.addressTypeList()		
+	def companyFlow={
+		/*List adl = AddressType.addressTypeList()		
 		println adl
-		[addresstype:adl]
+		[addresstype:adl]*/
+		start{
+			action{
+				Principal principal = new Principal()
+				PartyCompany partycompany = new PartyCompany()			
+				[principal: principal,partycompany:partycompany]
+			}
+			on("success").to("step1")
+		}
+		
+		step1 {
+			on('step2'){
+				flow.principal.properties = params	
+			}.to "step2"
+		}
+		
+		step2{
+			
+			on("step1"){
+				//flow.partycompany.email = params.email
+				//flow.partycompany.name = params.name
+				flow.partycompany.properties = params
+			}.to "step1"
+			on("step3").to "step3"
+		}
+		step3{
+			println "errors"
+		}
+ 
+		
 	}
+	
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def registerCompany={

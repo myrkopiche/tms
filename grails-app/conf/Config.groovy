@@ -88,7 +88,8 @@ log4j = {
 
     warn   'org.mortbay.log'
 	
-	debug 'grails.app'
+	debug 'grails.app',
+		  'org.codehaus.groovy.grails.webflow.engine.builder.FlowInfoCapturer'
 }
 
 // Added by the Spring Security Core plugin:

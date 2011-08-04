@@ -1,8 +1,10 @@
 package com.mrk
 
+import java.io.Serializable;
+
 import org.jasypt.util.text.BasicTextEncryptor;
 
-class Party {
+class Party implements Serializable{
 	
 	String email
 	static hasMany= [phones:Phone,addresses:Address,websites:Website]

@@ -1,6 +1,6 @@
 package com.mrk
 
-class Principal {
+class Principal implements Serializable {
 
 	String username
 	String password

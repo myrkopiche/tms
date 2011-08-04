@@ -1,6 +1,8 @@
 package com.mrk
 
-class PartyUser extends Party{
+import java.io.Serializable;
+
+class PartyUser extends Party implements Serializable{
 	
 	String lastname
 	String firstname

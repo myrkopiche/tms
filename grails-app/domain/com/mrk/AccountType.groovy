@@ -1,6 +1,8 @@
 package com.mrk
 
-class AccountType {
+import java.io.Serializable;
+
+class AccountType implements Serializable{
 	
 	String type
 	String name
