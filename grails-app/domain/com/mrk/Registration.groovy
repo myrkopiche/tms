@@ -1,6 +1,8 @@
 package com.mrk
 
-class Registration {
+import java.io.Serializable;
+
+class Registration implements Serializable{
 	String registrationToken
 	Date dateCreated
 	PartyUser partyUser

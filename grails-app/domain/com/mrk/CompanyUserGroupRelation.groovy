@@ -1,6 +1,8 @@
 package com.mrk
 
-class CompanyUserGroupRelation {
+import java.io.Serializable;
+
+class CompanyUserGroupRelation implements Serializable{
 	
 	PartyCompany company
 	PartyUser user
