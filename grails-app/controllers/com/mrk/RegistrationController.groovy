@@ -25,7 +25,7 @@ class RegistrationController implements Serializable {
 	
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def companyConfirmation = {
-		registrationService.companyConfirmation(params.tk,params.email,params.companyEmail)
+		registrationService.companyConfirmation(params.tk,params.email,params.companyEmail,params.companyId)
 		render "The registration is completed, you can now log in the application."
 	}
 	
@@ -125,7 +125,7 @@ class RegistrationController implements Serializable {
 		
 		regComp{
 			action{
-				def valid = registrationService.registerCompany(flow.principal, flow.partycompany)
+				def valid = registrationService.registerCompany(flow.principal, flow.partycompany,flow.address,flow.phone)
 				if(valid)
 				{
 					return success()
@@ -134,13 +134,6 @@ class RegistrationController implements Serializable {
 				{
 					return error()
 				}
-				/*
-				flow.partycompany.save()
-				def partyuser = PartyUser.findByPrincipal(flow.principal)
-				partyService.addUsersToCompany(flow.partycompany.id,partyuser.id as List)
-				partyuser.discard()
-				log.debug('success')
-				*/
 			}
 			on("success").to("step4")
 		}

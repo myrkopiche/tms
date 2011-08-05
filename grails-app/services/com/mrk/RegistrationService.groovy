@@ -39,16 +39,20 @@ class RegistrationService {
     }
 	
 	@Transactional(readOnly = false)
-	public Boolean registerCompany(Principal principal,PartyCompany partycompany) {
-		log.debug("About to register a new company: ${principal}");
+	public Boolean registerCompany(Principal principal,PartyCompany partycompany,Address address,Phone phone) {
+		log.debug("About to register a new company: ${principal}");		
 		
+		//add address and phone to company
+		address.save()
+		phone.save()
+		partycompany.addToAddresses(address).addToPhones(phone)
 		if(partycompany.save(flush:true))
 		{
 			//get partyUser
 			def partyuser = PartyUser.findByPrincipal(principal)
 			
 			//add user to company
-			partyService.addUsersToCompany(partycompany.id,partyuser.id as List)
+			partyService.addUsersToCompany(partycompany.id,partyuser.id as List,true)
 			
 			//create registration form
 			
@@ -70,6 +74,7 @@ class RegistrationService {
 		
 	}	
 	
+	@Transactional(readOnly = false)
 	public void confirmRegistration(String encryptedToken, String encryptedEmail)
 	{
 		log.debug("Encrypted email: " + encryptedEmail);
@@ -88,7 +93,8 @@ class RegistrationService {
 		
 	}
 	
-	public void companyConfirmation(String encryptedToken, String encryptedEmail,String encryptCompanyEmail)
+	@Transactional(readOnly = false)
+	public void companyConfirmation(String encryptedToken, String encryptedEmail,String encryptCompanyEmail,String companyId)
 	{
 		log.debug("Encrypted email: " + encryptedEmail);
 		log.debug("Encrypted CompanyEmail: " + encryptCompanyEmail);
@@ -96,42 +102,61 @@ class RegistrationService {
 		
 		String email = tmsEncryptionService.decrypt(encryptedEmail).decodeURL()
 		String companyEmail = tmsEncryptionService.decrypt(encryptCompanyEmail).decodeURL()
+		def compId =  tmsEncryptionService.decrypt(companyId).decodeURL()  as Long
 		String token = tmsEncryptionService.decrypt(encryptedToken).decodeURL()
 		
-		PartyUser pu = PartyUser.findByEmail(email)
-		//PartyCompany pc = PartyCompany
-		Registration reg = Registration.findByRegistrationTokenAndPartyUser(token,pu)
-		def cug = CompanyUserGroupRelation.findByUserAndCompany(reg.partyuser,)
+		//company
+		PartyCompany pc = PartyCompany.findByIdAndEmail(compId,companyEmail)
 		
-		/*
-		Principal principal = reg.partyUser.principal
-		principal.setEnabled(true)
-		principal.save()
+		//find company users
+		PartyUser compUser = new PartyUser()
+		def users = partyService.getAdminUsersForCompany(compId)
+		users.each {  
+			if(it.email == email)
+			{
+				compUser = it
+				return
+			}	
+		}
+		log.debug("compUser: ${compUser}")
+		//find association
+		Registration reg = Registration.findByRegistrationTokenAndPartyUser(token,compUser)
 		
-		//delete registration
-		reg.delete()
-		*/
+		if(reg) //si il y a bien registration activé la compagnie
+		{
+			pc.setEnable(true)
+			pc.save()
+			reg.delete()
+		}
+		else
+		{
+			throw new Exception('This is not a valid registration company, please try again')
+		}
+		
+		log.debug("successfully register company : ${pc}")
+		
 	}
 	
-	
+	@Transactional(readOnly = true)
 	private void sendCompanyConfirmationEmail(final Registration registration,final PartyCompany partycompany){
 		log.debug("sending company confirmation")
 		
 		def emailEncrypt = tmsEncryptionService.encrypt(registration.partyUser.email).encodeAsURL()
 		def companyEmailEncrypt = tmsEncryptionService.encrypt(partycompany.email).encodeAsURL()
+		def companyIdEncrypt = tmsEncryptionService.encrypt(partycompany.id.toString()).encodeAsURL()
 		def tokenEncrypt = tmsEncryptionService.encrypt(registration.registrationToken).encodeAsURL()
 		
 		sendMail {
 			to "${registration.partyUser.email}"
 			subject "Hello ${partycompany.name}"
 			body( view:"/mail/registrationCompanyConfirmation",
-				model:[name:partycompany.name,token:tokenEncrypt,email:emailEncrypt,emailConfirmationUrl:this.emailCompanyConfirmationUrl,companyEmail:companyEmailEncrypt ])
+				model:[name:partycompany.name,token:tokenEncrypt,email:emailEncrypt,emailConfirmationUrl:this.emailCompanyConfirmationUrl,companyEmail:companyEmailEncrypt,companyId:companyIdEncrypt ])
 		  }
 		  
 		
 	}
 	
-	
+	@Transactional(readOnly = true)
 	private void sendConfirmationEmail(final Registration registration){
 		
 		def emailEncrypt = tmsEncryptionService.encrypt(registration.partyUser.email).encodeAsURL()
