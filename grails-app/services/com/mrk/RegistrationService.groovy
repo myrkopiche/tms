@@ -82,6 +82,9 @@ class RegistrationService {
 		
 		String email = tmsEncryptionService.decrypt(encryptedEmail).decodeURL()
 		String token = tmsEncryptionService.decrypt(encryptedToken).decodeURL()
+		
+		log.debug('decrypted token and email')
+		
 		PartyUser pu = PartyUser.findByEmail(email)
 		Registration reg = Registration.findByRegistrationTokenAndPartyUser(token,pu)
 		Principal principal = reg.partyUser.principal

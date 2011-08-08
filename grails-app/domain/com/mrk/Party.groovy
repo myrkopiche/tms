@@ -10,7 +10,7 @@ class Party implements Serializable{
 	static hasMany= [phones:Phone,addresses:Address,websites:Website]
 	
 	static constraints = {
-		email blank: false, nullable:false,email:true
+		email blank: false, nullable:false,email:true,unique:true
 	}
 	
 	static mapping = {
