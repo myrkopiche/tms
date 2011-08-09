@@ -15,14 +15,19 @@ import com.mrk.Principal;
 import com.mrk.GroupAuthority;
 
 class BootStrap {
+	
 	def springSecurityService
 	def partyService
+	def userService
 	def registrationService
+	
 	
     def init = { servletContext ->
 		
+		
+		
 		//create account type
-		new AccountType(type:'FREE',name:'Free Account',description:'This type of account is good for trial').save(flush:true)
+		def act1 = new AccountType(type:'FREE',name:'Free Account',description:'This type of account is good for trial').save(flush:true)
 		new AccountType(type:'SILVER',name:'Silver Account',description:'This type of account is basic account').save(flush:true)
 		
 		//create address type
@@ -42,54 +47,40 @@ class BootStrap {
 		def auth2 = new Authority(authority: 'ROLE_COMPANY_UPDATE').save()
 		def auth3 = new Authority(authority: 'ROLE_COMPANY_DELETE').save()
 		
-
-		def group1 = new CompanyUserGroup(name:'GROUP_COMPANY')
-		group1.addToAuthorities(auth1)
-		.addToAuthorities(userRole)
-		.addToAuthorities(auth0)
+		//APPLICATION RIGHTS
+		def auth4 = new Authority(authority: 'ROLE_DASHBOARD').save()
+		
+		//create default TMS USER GROUP
+		def group1 = new CompanyUserGroup(name:'GROUP_COMPANY_ADMIN')
+		group1.addToAuthorities(auth0)
+		.addToAuthorities(auth1)
+		.addToAuthorities(auth2)
+		.addToAuthorities(auth3)
+		.addToAuthorities(auth4)
 		.save()
 		
 		
 		String password = springSecurityService.encodePassword('password')
-		def testUser = new Principal(username: 'me', enabled: false, password: password)
+		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
 		group1.addToPrincipals(testUser)
 		
-		GroupAuthority.create group1, auth1, true
+		//GroupAuthority.create group1, auth1, true
 		
 		def pu = new PartyUser(firstname:'firstname',lastname:'lastname',email:'mp@mr-k.org',principal:testUser)
 		pu.save()
-		//def pu = [username:'mp',password:'passs21',confirm:'passs21',firstname:'firstname',lastname:'lastname',email:'mp@mr-k.org']
-		//registrationService.registerUser(pu)
 		
-		//println 'jim'
-		
-		//testing registration
-		/*
-		def prs = [:]
-		prs.username = 'mp'
-		prs.password = 'mp'
-		prs.firstname = 'myrko'
-		prs.lastname = 'piche'
-		prs.email = 'mp@mr-k.org'
-		
-		registrationService.registerUser(prs)
-		
-		
-		
-		/*
 		
 		//create company
-		def accType = new AccountType(type:'FREE',name:'Free Account',description:'This type of account is good for trial').save(flush:true)
-		def partyCompany1 = new PartyCompany(email:'mp@wlab.ca',name:'wlab',enable:false,accountType:accType).save(flush:true)
-		partyCompany1.saveAdministrativeCompany()
 		
-		def partyUser = new PartyUser(lastname:'Piche',firstname:'Myrko',email:'mp@mr-k.org',principal:testUser).save(flush:true)
-		partyUser.principal.setEnabled true
-		partyUser.save()
-		
-		List userIds = [partyUser.id]
+		def partyCompany1 = new PartyCompany(email:'mp@wlab.ca',name:'wlab',enable:false,accountType:act1).save(flush:true)
+
+		List userIds = [pu.id]
 		partyService.addUsersToCompany(partyCompany1.id,userIds)
+		partyService.updateGroupsForUserCompany(pu.id, partyCompany1.id, [1])
+		partyService.setDefaultCompany(pu.id, partyCompany1.id)
+		
+		
 		
 		/*
 		assert Principal.count() == 1
@@ -140,6 +131,7 @@ class BootStrap {
 		*/
   
     }
+	
     def destroy = {
     }
 }

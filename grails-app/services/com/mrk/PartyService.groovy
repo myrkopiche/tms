@@ -82,6 +82,73 @@ class PartyService {
 		
 	}
 	
+	@Transactional(readOnly = false)
+	public void updateGroupsForUserCompany(Long userId, Long companyId, List<Long> groupIds) {
+		log.debug('Calling updateGroupsForUserCompany')
+		//select cug.group from com.tms.model.jpa.entity.CompanyUserGroupRelation cug where cug.company.id = :companyId and cug.user.id = :userId
+		def pu = PartyUser.get(userId)
+		def cp = PartyCompany.get(companyId)
+		def existingGroups = CompanyUserGroupRelation.findAllByCompanyAndUser(cp,pu)
+		
+		//need to remove if not in array of groupIds
+		existingGroups.each {  
+			log.debug("existing groupId = ${it.id}")
+			if(!it.group) //if group is null remove it
+			{
+				log.debug('remove null group instance')
+				it.delete()
+				
+			}
+			else
+			{
+				if (!groupIds.contains(it.group.id)){
+					log.debug('deleting companyUserGroupRelation id: ${it.id}')
+					it.delete()
+				}
+				else if(groupIds.contains(it.group.id))
+				{
+					groupIds.remove(it.group.id)
+				}
+			}
+			
+			
+			
+		}
+		
+		log.debug('final groupIds: ${groupIds}')
+		
+		groupIds.each{
+			CompanyUserGroup group =  CompanyUserGroup.get(it)
+			CompanyUserGroupRelation cugr = new CompanyUserGroupRelation();
+			cugr.setCompany(cp)
+			cugr.setUser(pu)
+			cugr.setGroup(group)	
+			cugr.save();
+		}
+		
+		
+		log.debug('existing company group for user: ${existingGroups}')
+		
+		
+		log.debug('UpdateGroupsForUserCompany() successful')
+	}
+	
+	
+	@Transactional(readOnly = false)
+	public void setDefaultCompany(Long userId, Long companyId) {
+		log.debug('Calling setDefaultCompany service')
+		def pu = PartyUser.get(userId)
+		def cp = PartyCompany.get(companyId)
+		def existingGroup = CompanyUserGroupRelation.findByCompanyAndUser(cp,pu)
+		existingGroup.setDefault_company(true)
+		existingGroup.save();		
+		log.debug('Calling setDefaultCompany service successful')
+	}
+	
+	
+	
+	
+	
 	
 
 	
