@@ -9,9 +9,12 @@ class PrincipalController {
 	
 	
     def index = {
-		
+		println("ya")
 		Principal user = Principal.get(springSecurityService.principal.id)
 		def p = PartyUser.findByPrincipal(user)
+		
+		partyService.updateGroupsForUserCompany(p.id, 2, [1,2])
+		
 		println user.getAuthorities()
 		springSecurityService.clearCachedRequestmaps()
 		println "y"

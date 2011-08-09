@@ -56,14 +56,22 @@ class BootStrap {
 		.addToAuthorities(auth1)
 		.addToAuthorities(auth2)
 		.addToAuthorities(auth3)
-		.addToAuthorities(auth4)
 		.save()
+		
+		def group2 = new CompanyUserGroup(name:'GROUP_COMPANY_USER')
+		group2.addToAuthorities(auth4)
+		.save()
+		
+		def group3 = new CompanyUserGroup(name:'GROUP_TMS_ADMIN')
+		group3.addToAuthorities(adminRole)
+		.save()
+		
 		
 		
 		String password = springSecurityService.encodePassword('password')
 		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
-		group1.addToPrincipals(testUser)
+		//group1.addToPrincipals(testUser)
 		
 		//GroupAuthority.create group1, auth1, true
 		

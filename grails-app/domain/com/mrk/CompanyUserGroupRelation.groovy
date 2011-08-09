@@ -1,6 +1,7 @@
 package com.mrk
 
 import java.io.Serializable;
+import java.util.Set;
 
 class CompanyUserGroupRelation implements Serializable{
 	
@@ -14,4 +15,23 @@ class CompanyUserGroupRelation implements Serializable{
     static constraints = {
 		group(nullable:true)
     }
+	
+	
+	static PartyCompany getCurrentCompany(long principalId) {		
+		Principal pr = Principal.get(principalId)
+		PartyUser user = PartyUser.findByPrincipal(pr)
+		def cugr = CompanyUserGroupRelation.findByUserAndDefault_company(user,true)
+		return cugr.company	
+	}
+	
+	static Set<CompanyUserGroup> getUserGroups(long principalId,long companyId)
+	{
+		Principal pr = Principal.get(principalId)
+		PartyUser partyUser = PartyUser.findByPrincipal(pr)
+		PartyCompany partyCompany = PartyCompany.get(companyId)
+		CompanyUserGroupRelation.findAllByUserAndCompany(partyUser,partyCompany).collect { it.group } as Set
+		
+	}
+	
+	
 }

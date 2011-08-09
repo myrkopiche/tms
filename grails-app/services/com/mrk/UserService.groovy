@@ -41,7 +41,7 @@ class UserService {
 		Principal pr = Principal.get(principal.id)
 		PartyUser pu = PartyUser.findByPrincipal(pr)
 		
-		def cugr = CompanyUserGroupRelation.findByCompanyAndUser(pc,pu)
+		def groups = CompanyUserGroupRelation.getUserGroups(pr.id,pc.id)
 		def companyAuthorities = []
 		cugr.each{
 			log.debug("group id: ${it.group.id}")
@@ -56,7 +56,6 @@ class UserService {
 		
 }
 	
-
 	
 	
 	

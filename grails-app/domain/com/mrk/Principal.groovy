@@ -31,12 +31,19 @@ class Principal implements Serializable {
 	Set<Authority> getAuthorities() {
 		//println 'hello'	
 		//this.groups.collect {it.authorities } as Set
+		//get current company
+		PartyCompany currentCompany = CompanyUserGroupRelation.getCurrentCompany(this.id)				
+		def userGroups = CompanyUserGroupRelation.getUserGroups(this.id,currentCompany.id)
+		
+		log.debug("current all groups is : ${groups}")
+		
 		def auth = []
-		this.groups.each{
+		userGroups.each{
 			it.authorities.each{
 				auth.add(it)
 			}
 		}
+		log.debug("Current authorities: ${auth}")
 		return auth as Set
 		//GroupAuthority.findAllByGroup(this).collect { it.authority } as Set
 	}
