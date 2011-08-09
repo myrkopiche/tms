@@ -71,7 +71,7 @@ class BootStrap {
 		String password = springSecurityService.encodePassword('password')
 		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
-		//group1.addToPrincipals(testUser)
+		testUser.addToGroups(group3)
 		
 		//GroupAuthority.create group1, auth1, true
 		

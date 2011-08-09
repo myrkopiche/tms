@@ -95,14 +95,14 @@ class PartyService {
 			log.debug("existing groupId = ${it.id}")
 			if(!it.group) //if group is null remove it
 			{
-				log.debug('remove null group instance')
+				log.debug("remove null group instance")
 				it.delete()
 				
 			}
 			else
 			{
 				if (!groupIds.contains(it.group.id)){
-					log.debug('deleting companyUserGroupRelation id: ${it.id}')
+					log.debug("deleting companyUserGroupRelation id: ${it.id}")
 					it.delete()
 				}
 				else if(groupIds.contains(it.group.id))
@@ -115,12 +115,13 @@ class PartyService {
 			
 		}
 		
-		log.debug('final groupIds: ${groupIds}')
+		log.debug("final groupIds: ${groupIds}")
 		
 		groupIds.each{
 			CompanyUserGroup group =  CompanyUserGroup.get(it)
 			CompanyUserGroupRelation cugr = new CompanyUserGroupRelation();
 			cugr.setCompany(cp)
+			cugr.setDefault_company(true)
 			cugr.setUser(pu)
 			cugr.setGroup(group)	
 			cugr.save();

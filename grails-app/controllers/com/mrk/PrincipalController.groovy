@@ -9,6 +9,7 @@ class PrincipalController {
 	
 	
     def index = {
+		/*
 		println("ya")
 		Principal user = Principal.get(springSecurityService.principal.id)
 		def p = PartyUser.findByPrincipal(user)
@@ -26,7 +27,7 @@ class PrincipalController {
 			partyService.getUsersForCompany(it.id)
 		}
 		
-		
+		*/
         redirect(action: "list", params: params)
 		
 		

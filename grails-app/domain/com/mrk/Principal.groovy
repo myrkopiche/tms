@@ -38,11 +38,21 @@ class Principal implements Serializable {
 		log.debug("current all groups is : ${groups}")
 		
 		def auth = []
+		//loop in company created groups
 		userGroups.each{
 			it.authorities.each{
 				auth.add(it)
 			}
 		}
+		
+		//loop in user groups system admin
+		this.groups.each{
+			it.authorities.each{
+				auth.add(it)
+			}
+		}
+		
+		
 		log.debug("Current authorities: ${auth}")
 		return auth as Set
 		//GroupAuthority.findAllByGroup(this).collect { it.authority } as Set
