@@ -4,13 +4,16 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
+       
     </head>
     <body>
-    <% def currentCompany = 2 %>
-    <g:select name="user.company.id"
+    
+    <g:form name="companyform" controller="partyCompany" action="setDefaultCompany" method="post">
+    <g:select name="company.id"
           from="${companies}"
-          value="${currentCompany }"
+          value="${session['company.current']}"
           optionKey="id"
-          optionValue="name" />
+          optionValue="name" onChange="this.form.submit();" />
+    </g:form>
     </body>
 </html>

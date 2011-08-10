@@ -160,10 +160,17 @@ class PartyService {
 	@Transactional(readOnly = false)
 	public void setDefaultCompany(Long userId, Long companyId) {
 		log.debug('Calling setDefaultCompany service')
-				
+		
 		//save default company into database
 		def pu = PartyUser.get(userId)
 		def cp = PartyCompany.get(companyId)
+		//reset company to no default
+		def cugr = CompanyUserGroupRelation.findAllByUserAndEnable(pu,true)
+		cugr.each { 
+			it.setDefault_company(false)
+			it.save()
+		}
+		
 		def existingGroup = CompanyUserGroupRelation.findByCompanyAndUser(cp,pu)
 		existingGroup.setDefault_company(true)
 		existingGroup.save();

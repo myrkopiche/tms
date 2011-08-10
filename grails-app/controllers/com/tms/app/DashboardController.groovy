@@ -28,16 +28,17 @@ class DashboardController {
 		
 		Principal user = Principal.get(springSecurityService.principal.id)	
 		println user.getAuthorities()
-		def p = PartyUser.findByPrincipal(user)
+		def p = partyService.getUser(springSecurityService.principal.id)
 		def currenTCompany = CompanyUserGroupRelation.getCurrentCompany(user.id)
 		log.debug("currentCompany is ${currenTCompany}")
-		List<Long> groups = [1,2]
+		//List<Long> groups = [2]
 		
-		partyService.updateGroupsForUserCompany(p.id, 2, groups)
+		//partyService.updateGroupsForUserCompany(p.id, 2, groups)
+		
 		springSecurityService.reauthenticate user.username		
 
 		
-		log.debug("current company working is ${session['company.current']}")
+		//log.debug("current company working is ${session['company.current']}")
 		
 		def companies =  CompanyUserGroupRelation.getAllUserCompanies(springSecurityService.principal.id)
 		[companies:companies]
