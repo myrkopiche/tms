@@ -91,24 +91,31 @@ class PartyService {
 		def existingGroups = CompanyUserGroupRelation.findAllByCompanyAndUser(cp,pu)
 		
 		//need to remove if not in array of groupIds
-		existingGroups.each {  
-			log.debug("existing groupId = ${it.id}")
-			if(!it.group) //if group is null remove it
+		existingGroups.each { extg ->
+			
+			if(!extg.group) //if group is null remove it
 			{
 				log.debug("remove null group instance")
-				it.delete()
+				extg.delete()
 				
 			}
 			else
 			{
-				if (!groupIds.contains(it.group.id)){
-					log.debug("deleting companyUserGroupRelation id: ${it.id}")
-					it.delete()
+				log.debug("existing groupId = ${extg.group.id}")
+				int extGroupId = extg.group.id
+				
+				if(groupIds.contains(extGroupId))
+				{					
+					groupIds -=extGroupId
+					log.debug("final groupIds is ${groupIds}")
+					
 				}
-				else if(groupIds.contains(it.group.id))
+				else
 				{
-					groupIds.remove(it.group.id)
+					log.debug("groupIds not contain ${extg.group.id}")
+					extg.delete()
 				}
+				
 			}
 			
 			
@@ -128,7 +135,7 @@ class PartyService {
 		}
 		
 		
-		log.debug('existing company group for user: ${existingGroups}')
+		log.debug("existing company group for user: ${existingGroups}")
 		
 		
 		log.debug('UpdateGroupsForUserCompany() successful')
