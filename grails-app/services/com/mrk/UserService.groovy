@@ -6,14 +6,14 @@ class UserService {
 	
 	def springSecurityService
 	
-	
+	/*
 	@Transactional(readOnly = false)
 	public void setCurrentCompanyAuthorities(Long companyId) {
 		 
-		log.debug("Calling setCurrentCompanyAuthorities with company id: ${companyId}")
+		/*log.debug("Calling setCurrentCompanyAuthorities with company id: ${companyId}")
 		def authentication = springSecurityService.authentication
 		def principal = springSecurityService.principal
-		generateCompanyAuthorities(companyId);
+		//generateCompanyAuthorities(companyId);
 		/*
 		
 				UsernamePasswordAuthenticationToken newAuthenticationToken = new UsernamePasswordAuthenticationToken(
@@ -24,13 +24,13 @@ class UserService {
 						newAuthenticationToken);
 		
 				//log.debug("Current Company changed to {}", companyId);
-		*/
+		
 	  }
 	
 	
 	@Transactional(readOnly = false)
 	private void generateCompanyAuthorities(Long companyId) {
-		log.debug("Calling generate Company Authorities with company id: ${companyId}")
+		/*log.debug("Calling generate Company Authorities with company id: ${companyId}")
 		def principal = springSecurityService.principal
 		log.debug("principal id: ${principal.id}")
 		
@@ -56,7 +56,7 @@ class UserService {
 		
 }
 	
-	
+	*/
 	
 	
 }

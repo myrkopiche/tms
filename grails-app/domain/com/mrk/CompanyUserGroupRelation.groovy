@@ -33,5 +33,14 @@ class CompanyUserGroupRelation implements Serializable{
 		
 	}
 	
+	static List<PartyCompany> getAllUserCompanies(long principalId)		
+	{
+		Principal pr = Principal.get(principalId)
+		PartyUser user = PartyUser.findByPrincipal(pr)
+		//def cugr = CompanyUserGroupRelation.executeQuery("Select distinct company.name from company_user_group_relation cugr where cugr.user = ? ",[user])
+		CompanyUserGroupRelation.findAllByUserAndEnable(user,true)
+		
+	}
+	
 	
 }

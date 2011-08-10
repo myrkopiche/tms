@@ -81,11 +81,14 @@ class BootStrap {
 		
 		//create company
 		
-		def partyCompany1 = new PartyCompany(email:'mp@wlab.ca',name:'wlab',enable:false,accountType:act1).save(flush:true)
+		def partyCompany1 = new PartyCompany(email:'mp@wlab.ca',name:'wlab',enable:true,accountType:act1).save(flush:true)
+		def partyCompany2 = new PartyCompany(email:'info@wlab.ca',name:'mrk',enable:true,accountType:act1).save(flush:true)
 
 		List userIds = [pu.id]
 		partyService.addUsersToCompany(partyCompany1.id,userIds)
+		partyService.addUsersToCompany(partyCompany2.id,userIds)
 		partyService.updateGroupsForUserCompany(pu.id, partyCompany1.id, [1])
+		partyService.updateGroupsForUserCompany(pu.id, partyCompany2.id, [2])
 		partyService.setDefaultCompany(pu.id, partyCompany1.id)
 		
 		
