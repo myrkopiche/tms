@@ -1,7 +1,10 @@
 package com.mrk
 
 
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession;
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
 
 class PartyService {
 	
@@ -88,6 +91,7 @@ class PartyService {
 		//select cug.group from com.tms.model.jpa.entity.CompanyUserGroupRelation cug where cug.company.id = :companyId and cug.user.id = :userId
 		def pu = PartyUser.get(userId)
 		def cp = PartyCompany.get(companyId)
+		def areEnable = cp.enable
 		def existingGroups = CompanyUserGroupRelation.findAllByCompanyAndUser(cp,pu)
 		
 		//need to remove if not in array of groupIds
@@ -114,12 +118,8 @@ class PartyService {
 				{
 					log.debug("groupIds not contain ${extg.group.id}")
 					extg.delete()
-				}
-				
-			}
-			
-			
-			
+				}				
+			}		
 		}
 		
 		log.debug("final groupIds: ${groupIds}")
@@ -130,6 +130,7 @@ class PartyService {
 			cugr.setCompany(cp)
 			cugr.setDefault_company(true)
 			cugr.setUser(pu)
+			cugr.setEnable(areEnable)
 			cugr.setGroup(group)	
 			cugr.save();
 		}
@@ -142,18 +143,33 @@ class PartyService {
 	}
 	
 	
+	/*
+	 * Retrieve PartyUser with principal Id
+	 */
+	@Transactional(readOnly = true)
+	public PartyUser getUser(Long principalId)
+	{
+		Principal principal = Principal.get(principalId)
+		PartyUser.findByPrincipal(principal)
+	}
+	
+	
+	/*
+	* Set in session and database the current company using
+	*/
 	@Transactional(readOnly = false)
 	public void setDefaultCompany(Long userId, Long companyId) {
 		log.debug('Calling setDefaultCompany service')
+				
+		//save default company into database
 		def pu = PartyUser.get(userId)
 		def cp = PartyCompany.get(companyId)
 		def existingGroup = CompanyUserGroupRelation.findByCompanyAndUser(cp,pu)
 		existingGroup.setDefault_company(true)
-		existingGroup.save();		
+		existingGroup.save();
+				
 		log.debug('Calling setDefaultCompany service successful')
 	}
-	
-	
 	
 	
 	

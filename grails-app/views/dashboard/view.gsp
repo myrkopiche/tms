@@ -6,9 +6,11 @@
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
+    <% def currentCompany = 2 %>
     <g:select name="user.company.id"
           from="${companies}"
-          value="${id}"
-          optionKey="id" />
+          value="${currentCompany }"
+          optionKey="id"
+          optionValue="name" />
     </body>
 </html>

@@ -34,9 +34,11 @@ class DashboardController {
 		List<Long> groups = [1,2]
 		
 		partyService.updateGroupsForUserCompany(p.id, 2, groups)
-		springSecurityService.reauthenticate user.username
-		
+		springSecurityService.reauthenticate user.username		
 
+		
+		log.debug("current company working is ${session['company.current']}")
+		
 		def companies =  CompanyUserGroupRelation.getAllUserCompanies(springSecurityService.principal.id)
 		[companies:companies]
 	}
