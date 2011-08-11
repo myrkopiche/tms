@@ -42,24 +42,7 @@ class PartyService {
 		log.debug("getAdminUsersForCompany() successfull and return users = ${result}");
 		return result
 	}
-	
 
-	
-	@Transactional(readOnly = true)
-	public List getAdministrativeCompanies(){
-		log.debug("Calling getAdministrativeCompanies()");
-		List result = PartyCompany.findAllByAdministrativeCompany(true)
-		log.debug("getAdministrativeCompanies() Successful and return ${result} ")
-		return result		
-	}
-	
-	@Transactional(readOnly = true)
-	public Long saveAdministrativeCompany(PartyCompany company){
-		log.debug("Calling saveAdministrativeCompany(PartyCompany company) with company = ${company}");
-		company.saveAdministrativeCompany()		
-		log.debug("saveAdministrativeCompany() successful and returns id = ${company.getId()}");
-		return company.getId();
-	}
 	
 	@Transactional(readOnly = false)
 	public void addUsersToCompany(Long companyId, List userIds,boolean is_admin = false){
@@ -73,7 +56,6 @@ class PartyService {
 			log.debug("company = ${company}");
 			CompanyUserGroupRelation cug = new CompanyUserGroupRelation()
 			cug.setCompany(company)
-			cug.setGroup(null) // The user is linked but does not have any permissions
 			cug.setIs_admin(is_admin)
 			cug.setUser(user)
 			cug.setEnable(true)
@@ -92,10 +74,10 @@ class PartyService {
 		def pu = PartyUser.get(userId)
 		def cp = PartyCompany.get(companyId)
 		def areEnable = cp.enable
-		def existingGroups = CompanyUserGroupRelation.findAllByCompanyAndUser(cp,pu)
+		def cugr= CompanyUserGroupRelation.findByCompanyAndUser(cp,pu)
 		
 		//need to remove if not in array of groupIds
-		existingGroups.each { extg ->
+		cugr.groups.each { extg ->
 			
 			if(!extg.group) //if group is null remove it
 			{
@@ -105,8 +87,8 @@ class PartyService {
 			}
 			else
 			{
-				log.debug("existing groupId = ${extg.group.id}")
-				int extGroupId = extg.group.id
+				log.debug("existing groupId = ${extg.id}")
+				int extGroupId = extg.id
 				
 				if(groupIds.contains(extGroupId))
 				{					
@@ -116,7 +98,7 @@ class PartyService {
 				}
 				else
 				{
-					log.debug("groupIds not contain ${extg.group.id}")
+					log.debug("groupIds not contain ${extg.id}")
 					extg.delete()
 				}				
 			}		
@@ -126,17 +108,11 @@ class PartyService {
 		
 		groupIds.each{
 			CompanyUserGroup group =  CompanyUserGroup.get(it)
-			CompanyUserGroupRelation cugr = new CompanyUserGroupRelation();
-			cugr.setCompany(cp)
-			cugr.setDefault_company(true)
-			cugr.setUser(pu)
-			cugr.setEnable(areEnable)
-			cugr.setGroup(group)	
-			cugr.save();
+			cugr.addToGroups(group)
 		}
 		
 		
-		log.debug("existing company group for user: ${existingGroups}")
+		log.debug("existing company group for user: ${cugr.groups}")
 		
 		
 		log.debug('UpdateGroupsForUserCompany() successful')

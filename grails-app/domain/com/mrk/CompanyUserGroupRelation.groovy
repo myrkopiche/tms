@@ -13,13 +13,12 @@ class CompanyUserGroupRelation implements Serializable{
 	
 	PartyCompany company
 	PartyUser user
-	CompanyUserGroup group
+	static hasMany =[groups:CompanyUserGroup]
 	boolean enable
 	boolean is_admin
 	boolean default_company = false
 	
     static constraints = {
-		group(nullable:true)
     }
 	
 	
@@ -38,7 +37,7 @@ class CompanyUserGroupRelation implements Serializable{
 		Principal pr = Principal.get(principalId)
 		PartyUser partyUser = PartyUser.findByPrincipal(pr)
 		PartyCompany partyCompany = PartyCompany.get(companyId)
-		CompanyUserGroupRelation.findAllByUserAndCompany(partyUser,partyCompany).collect { it.group } as Set
+		CompanyUserGroupRelation.findAllByUserAndCompany(partyUser,partyCompany).collect { it.groups } as Set
 		
 	}
 	

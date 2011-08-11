@@ -21,4 +21,11 @@ class CompanyModuleGroupRelation implements Serializable{
 		
 	}
 	
+	static Set<CompanyAdminGroup> getCompanyAdminGroups(long companyId)
+	{
+		PartyCompany partyCompany = PartyCompany.get(companyId)
+		CompanyModuleGroupRelation.findAllByCompanyAndEnable(partyCompany,true).collect { it.adminGroups} as Set
+	}
+	
+	
 }

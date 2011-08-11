@@ -29,10 +29,10 @@ class DashboardController {
 	
 	def view = {
 		Principal user = Principal.get(springSecurityService.principal.id)
-		def currenTCompany = CompanyUserGroupRelation.getCurrentCompany(user.id)
-		def p = partyService.getUser(springSecurityService.principal.id)
+		//def currenTCompany = CompanyUserGroupRelation.getCurrentCompany(user.id)
+		//def p = partyService.getUser(springSecurityService.principal.id)
 		//springSecurityService.reauthenticate user.username
-		
+		/*
 		def cug = CompanyAdminGroup.findAll()
 		def listofcug = cug.collect { it.id }
 		def moduleGroups = CompanyModuleGroupRelation.getCompanyGroups(currenTCompany.id)

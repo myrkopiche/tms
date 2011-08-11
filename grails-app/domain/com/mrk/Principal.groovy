@@ -36,9 +36,12 @@ class Principal implements Serializable {
 		log.debug("in principal currentcompany : ${currentCompany}")	
 		if(currentCompany)	
 		{	
-			CompanyUserGroup userGroups = CompanyUserGroupRelation.getUserGroups(this.id,currentCompany.id)
+			def userGroups = CompanyUserGroupRelation.getUserGroups(this.id,currentCompany.id)
+			log.debug("in principal userGroups = ${userGroups}")
 			def moduleGroups = CompanyModuleGroupRelation.getCompanyGroups(currentCompany.id)
 			log.debug("current all groups is : ${moduleGroups}")
+			def adminModuleGroups = CompanyModuleGroupRelation.getCompanyAdminGroups(currentCompany.id)
+			log.debug("in principal  adminModuleGroups is : ${adminModuleGroups}")
 			
 			def auth = []
 			
@@ -47,7 +50,16 @@ class Principal implements Serializable {
 				it.authorities.each{
 					auth.add(it)
 				}
+									
 			}
+			
+			//if user is admin
+			adminModuleGroups.each{
+				it.authorities.each{
+					auth.add(it)
+				}
+			}
+			
 			
 			//loop in company created groups
 			userGroups.each{
