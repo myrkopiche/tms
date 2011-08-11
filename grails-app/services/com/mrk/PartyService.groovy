@@ -69,7 +69,7 @@ class PartyService {
 	
 	@Transactional(readOnly = false)
 	public void updateGroupsForUserCompany(Long userId, Long companyId, List<Long> groupIds) {
-		log.debug('Calling updateGroupsForUserCompany')
+		log.debug("Calling updateGroupsForUserCompany userid= ${userId} and companyId= ${companyId} and groups= ${groupIds}")
 		//select cug.group from com.tms.model.jpa.entity.CompanyUserGroupRelation cug where cug.company.id = :companyId and cug.user.id = :userId
 		def pu = PartyUser.get(userId)
 		def cp = PartyCompany.get(companyId)
@@ -77,45 +77,59 @@ class PartyService {
 		def cugr= CompanyUserGroupRelation.findByCompanyAndUser(cp,pu)
 		
 		//need to remove if not in array of groupIds
-		cugr.groups.each { extg ->
-			
-			if(!extg.group) //if group is null remove it
-			{
-				log.debug("remove null group instance")
-				extg.delete()
+		if(cugr)
+		{
+			cugr.groups.each { extg ->
 				
-			}
-			else
-			{
-				log.debug("existing groupId = ${extg.id}")
-				int extGroupId = extg.id
-				
-				if(groupIds.contains(extGroupId))
-				{					
-					groupIds -=extGroupId
-					log.debug("final groupIds is ${groupIds}")
+				if(!extg.group) //if group is null remove it
+				{
+					log.debug("remove null group instance")
+					extg.delete()
 					
 				}
 				else
 				{
-					log.debug("groupIds not contain ${extg.id}")
-					extg.delete()
-				}				
-			}		
+					log.debug("existing groupId = ${extg.id}")
+					int extGroupId = extg.id
+					
+					if(groupIds.contains(extGroupId))
+					{					
+						groupIds -=extGroupId
+						log.debug("final groupIds is ${groupIds}")
+						
+					}
+					else
+					{
+						log.debug("groupIds not contain ${extg.id}")
+						extg.delete()
+					}				
+				}		
+			}
+			
+			log.debug("final groupIds: ${groupIds}")
+			
+			groupIds.each{
+				CompanyUserGroup group =  CompanyUserGroup.get(it)
+				log.debug("companysergroup id = ${group}")
+				if(group){
+					cugr.addToGroups(group)
+				}
+				else
+				{
+					log.debug("nothing to update")
+				}
+			}
+			
+			
+			log.debug("existing company group for user: ${cugr.groups}")
+			
+			
+			log.debug('UpdateGroupsForUserCompany() successful')
 		}
-		
-		log.debug("final groupIds: ${groupIds}")
-		
-		groupIds.each{
-			CompanyUserGroup group =  CompanyUserGroup.get(it)
-			cugr.addToGroups(group)
+		else
+		{
+			log.debug("nothing to update")
 		}
-		
-		
-		log.debug("existing company group for user: ${cugr.groups}")
-		
-		
-		log.debug('UpdateGroupsForUserCompany() successful')
 	}
 	
 	

@@ -21,10 +21,10 @@ class CompanyModuleGroupRelation implements Serializable{
 		
 	}
 	
-	static Set<CompanyAdminGroup> getCompanyAdminGroups(long companyId)
+	static def getCompanyAdminGroups(long companyId)
 	{
 		PartyCompany partyCompany = PartyCompany.get(companyId)
-		CompanyModuleGroupRelation.findAllByCompanyAndEnable(partyCompany,true).collect { it.adminGroups} as Set
+		CompanyModuleGroupRelation.findAllByCompanyAndEnable(partyCompany,true).collect { it.adminGroups}.flatten()
 	}
 	
 	

@@ -71,10 +71,13 @@ class BootStrap {
 		def compAdminGroup2 = new CompanyAdminGroup(name:'GROUP_MODULE_DASHBOARD_USER_ADMIN').save()
 		compAdminGroup1.addToAuthorities(auth4)
 		
+		//Group created by a company
+		def auth5 = new Authority(authority: 'ROLE_DASHBOARD_VIEW').save()
+		def compUserGroup1 = new CompanyUserGroup(name:'GROUP_DASHBOARD_VIEW').save()
+		compUserGroup1.addToAuthorities(auth5)
+				
 		
 		
-		
-		/*
 		String password = springSecurityService.encodePassword('password')
 		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
@@ -89,16 +92,24 @@ class BootStrap {
 		//create company		
 		def partyCompany1 = new PartyCompany(email:'mp@wlab.ca',name:'wlab',enable:true,accountType:act1).save(flush:true)
 		def partyCompany2 = new PartyCompany(email:'info@wlab.ca',name:'mrk',enable:true,accountType:act1).save(flush:true)
-		//add to company module rights
-		def cmgr = new CompanyModuleGroupRelation(company:partyCompany1,group:module1).save()
+		//add company base module rights
+		CompanyModuleGroup cmg = CompanyModuleGroup.findByName('GROUP_MODULE_BASE')
+		def cmgr = new CompanyModuleGroupRelation(company:partyCompany1,group:cmg,enable:true).save()
+		//add admin base group rights
+		def cag = CompanyAdminGroup.findAll()
+		cag.each{
+			cmgr.addToAdminGroups(it)
+		}
+		
 		
 		List userIds = [pu.id]
 		partyService.addUsersToCompany(partyCompany1.id,userIds)
 		partyService.addUsersToCompany(partyCompany2.id,userIds)
-		partyService.updateGroupsForUserCompany(pu.id, partyCompany1.id, [1])
-		partyService.updateGroupsForUserCompany(pu.id, partyCompany2.id, [2])
-		partyService.setDefaultCompany(pu.id, partyCompany1.id)
-		*/
+		def groupsId = compUserGroup1.id 
+		partyService.updateGroupsForUserCompany(pu.id, partyCompany1.id, groupsId as List)
+		//partyService.updateGroupsForUserCompany(pu.id, partyCompany2.id, [2])
+		//partyService.setDefaultCompany(pu.id, partyCompany1.id)
+		
 		
 		
 		/*
