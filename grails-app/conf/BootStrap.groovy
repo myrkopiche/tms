@@ -2,6 +2,7 @@ import org.hibernate.validator.Email;
 import com.mrk.AccountType;
 import com.mrk.AddressType;
 
+import com.mrk.CompanyAdminGroup;
 import com.mrk.CompanyModuleGroup;
 import com.mrk.CompanyModuleGroupRelation;
 import com.mrk.CompanyUserGroup;
@@ -58,29 +59,22 @@ class BootStrap {
 		def auth3 = new Authority(authority: 'ROLE_COMPANY_DELETE').save()
 		
 		
-		
-		
-		//APPLICATION RIGHTS
-		def auth4 = new Authority(authority: 'ROLE_DASHBOARD').save()
-		
-		//create default TMS USER GROUP
-		def group1 = new CompanyUserGroup(name:'GROUP_COMPANY_ADMIN')
-		group1.addToAuthorities(auth0)
+		//company admin group
+		def compAdminGroup1 = new CompanyAdminGroup(name:'GROUP_MODULE_COMPANY_USER_ADMIN').save()
+		compAdminGroup1.addToAuthorities(auth0)
 		.addToAuthorities(auth1)
 		.addToAuthorities(auth2)
 		.addToAuthorities(auth3)
-		.save()
 		
-		def group2 = new CompanyUserGroup(name:'GROUP_COMPANY_USER')
-		group2.addToAuthorities(auth4)
-		.save()
-		
-		def group3 = new CompanyUserGroup(name:'GROUP_TMS_ADMIN')
-		group3.addToAuthorities(adminRole)
-		.save()
+		//dashboard module
+		def auth4 = new Authority(authority: 'ROLE_DASHBOARD').save()
+		def compAdminGroup2 = new CompanyAdminGroup(name:'GROUP_MODULE_DASHBOARD_USER_ADMIN').save()
+		compAdminGroup1.addToAuthorities(auth4)
 		
 		
 		
+		
+		/*
 		String password = springSecurityService.encodePassword('password')
 		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
@@ -92,11 +86,10 @@ class BootStrap {
 		pu.save()
 		
 		
-		//create company
-		
+		//create company		
 		def partyCompany1 = new PartyCompany(email:'mp@wlab.ca',name:'wlab',enable:true,accountType:act1).save(flush:true)
 		def partyCompany2 = new PartyCompany(email:'info@wlab.ca',name:'mrk',enable:true,accountType:act1).save(flush:true)
-		
+		//add to company module rights
 		def cmgr = new CompanyModuleGroupRelation(company:partyCompany1,group:module1).save()
 		
 		List userIds = [pu.id]
@@ -105,7 +98,7 @@ class BootStrap {
 		partyService.updateGroupsForUserCompany(pu.id, partyCompany1.id, [1])
 		partyService.updateGroupsForUserCompany(pu.id, partyCompany2.id, [2])
 		partyService.setDefaultCompany(pu.id, partyCompany1.id)
-		
+		*/
 		
 		
 		/*

@@ -14,20 +14,24 @@ class CompanyUserGroupRelation implements Serializable{
 	PartyCompany company
 	PartyUser user
 	CompanyUserGroup group
+	CompanyAdminGroup groupadmin
 	boolean enable
 	boolean is_admin
 	boolean default_company = false
 	
     static constraints = {
 		group(nullable:true)
+		groupadmin(nullable:true)
     }
 	
 	
-	static PartyCompany getCurrentCompany(long principalId) {		
+	static def getCurrentCompany(long principalId) {		
 		Principal pr = Principal.get(principalId)
 		PartyUser user = PartyUser.findByPrincipal(pr)
 		def cugr = CompanyUserGroupRelation.findByUserAndDefault_company(user,true)
-		return cugr.company	
+		if(!cugr)return false
+		
+		return cugr.company		
 	}
 	
 	

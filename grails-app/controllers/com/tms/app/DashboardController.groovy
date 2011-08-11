@@ -1,7 +1,10 @@
 package com.tms.app
 
+import com.mrk.CompanyAdminGroup;
 import com.mrk.CompanyModuleGroupRelation;
+import com.mrk.CompanyUserGroup;
 import com.mrk.CompanyUserGroupRelation;
+import com.mrk.Group;
 import com.mrk.PartyCompany;
 import com.mrk.PartyService;
 import com.mrk.PartyUser;
@@ -26,9 +29,17 @@ class DashboardController {
 	
 	def view = {
 		Principal user = Principal.get(springSecurityService.principal.id)
+		def currenTCompany = CompanyUserGroupRelation.getCurrentCompany(user.id)
+		def p = partyService.getUser(springSecurityService.principal.id)
+		//springSecurityService.reauthenticate user.username
 		
+		def cug = CompanyAdminGroup.findAll()
+		def listofcug = cug.collect { it.id }
+		partyService.updateGroupsForUserCompany(p.id, currenTCompany.id, listofcug)
 		
-		//log.debug("company = ${user.authorities}")
+		log.debug("companuAdminGroup is ${listofcug}")
+		
+		//	log.debug("company = ${user.authorities}")
 		//println springSecurityService.principal.id
 		/*
 		Principal user = Principal.get(springSecurityService.principal.id)	

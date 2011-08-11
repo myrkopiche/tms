@@ -1,8 +1,9 @@
 package com.mrk
 
+import java.io.Serializable;
 import java.util.Set;
 
-class CompanyModuleGroupRelation {
+class CompanyModuleGroupRelation implements Serializable{
 
     PartyCompany company
 	CompanyModuleGroup group
@@ -15,7 +16,7 @@ class CompanyModuleGroupRelation {
 	static Set<CompanyModuleGroup> getCompanyGroups(long companyId)
 	{
 		PartyCompany partyCompany = PartyCompany.get(companyId)
-		CompanyModuleGroupRelation.findAllByCompany(partyCompany).collect { it.group } as Set
+		CompanyModuleGroupRelation.findAllByCompanyAndEnable(partyCompany,true).collect { it.group } as Set
 		
 	}
 	

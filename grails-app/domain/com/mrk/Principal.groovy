@@ -32,37 +32,45 @@ class Principal implements Serializable {
 		//println 'hello'	
 		//this.groups.collect {it.authorities } as Set
 		//get current company
-		PartyCompany currentCompany = CompanyUserGroupRelation.getCurrentCompany(this.id)				
-		CompanyUserGroup userGroups = CompanyUserGroupRelation.getUserGroups(this.id,currentCompany.id)
-		def moduleGroups = CompanyModuleGroupRelation.getCompanyGroups(currentCompany.id)
-		log.debug("current all groups is : ${moduleGroups}")
-		
-		def auth = []
-		
-		//loop in comapny module groups
-		moduleGroups.each{
-			it.authorities.each{
-				auth.add(it)
+		def currentCompany = CompanyUserGroupRelation.getCurrentCompany(this.id)
+		log.debug("in principal currentcompany : ${currentCompany}")	
+		if(currentCompany)	
+		{	
+			CompanyUserGroup userGroups = CompanyUserGroupRelation.getUserGroups(this.id,currentCompany.id)
+			def moduleGroups = CompanyModuleGroupRelation.getCompanyGroups(currentCompany.id)
+			log.debug("current all groups is : ${moduleGroups}")
+			
+			def auth = []
+			
+			//loop in comapny module groups
+			moduleGroups.each{
+				it.authorities.each{
+					auth.add(it)
+				}
 			}
-		}
-		
-		//loop in company created groups
-		userGroups.each{
-			it.authorities.each{
-				auth.add(it)
+			
+			//loop in company created groups
+			userGroups.each{
+				it.authorities.each{
+					auth.add(it)
+				}
 			}
-		}
-		
-		//loop in user groups system admin
-		this.groups.each{
-			it.authorities.each{
-				auth.add(it)
+			
+			//loop in user groups system admin
+			this.groups.each{
+				it.authorities.each{
+					auth.add(it)
+				}
 			}
+			
+			
+			log.debug("Current authorities: ${auth}")
+			return auth as Set
+			//GroupAuthority.findAllByGroup(this).collect { it.authority } as Set
 		}
-		
-		
-		log.debug("Current authorities: ${auth}")
-		return auth as Set
-		//GroupAuthority.findAllByGroup(this).collect { it.authority } as Set
+		else
+		{
+			return []
+		}
 	}
 }

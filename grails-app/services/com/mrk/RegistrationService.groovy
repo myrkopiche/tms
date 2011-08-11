@@ -54,6 +54,15 @@ class RegistrationService {
 			//add user to company
 			partyService.addUsersToCompany(partycompany.id,partyuser.id as List,true)
 			
+			//add company base module rights
+			CompanyModuleGroup cmg = CompanyModuleGroup.findByName('GROUP_MODULE_BASE')
+			def cmgr = new CompanyModuleGroupRelation(company:partycompany,group:cmg,enable:true).save()
+			
+			//add admin base group rights
+			def cag = CompanyAdminGroup.findAll()
+			def listofcag = cag.collect { it.id }
+			//partyService.updateGroupsForUserCompany(partyuser.id, partycompany.id, listofcag)
+			
 			//create registration form
 			
 			Registration reg = new Registration()
