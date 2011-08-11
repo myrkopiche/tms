@@ -35,8 +35,11 @@ class DashboardController {
 		
 		def cug = CompanyAdminGroup.findAll()
 		def listofcug = cug.collect { it.id }
-		partyService.updateGroupsForUserCompany(p.id, currenTCompany.id, listofcug)
-		
+		def moduleGroups = CompanyModuleGroupRelation.getCompanyGroups(currenTCompany.id)
+		moduleGroups.each{
+			def cc = CompanyModuleGroupRelation.get(it.id)
+			log.debug("authorities for module admin user: ${cc.adminGroups.authorities}")
+		}
 		log.debug("companuAdminGroup is ${listofcug}")
 		
 		//	log.debug("company = ${user.authorities}")

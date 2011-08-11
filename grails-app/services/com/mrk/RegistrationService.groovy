@@ -60,8 +60,9 @@ class RegistrationService {
 			
 			//add admin base group rights
 			def cag = CompanyAdminGroup.findAll()
-			def listofcag = cag.collect { it.id }
-			//partyService.updateGroupsForUserCompany(partyuser.id, partycompany.id, listofcag)
+			cag.each{
+				cmgr.addToAdminGroups(it)
+			}
 			
 			//create registration form
 			

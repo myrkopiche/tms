@@ -7,6 +7,7 @@ class CompanyModuleGroupRelation implements Serializable{
 
     PartyCompany company
 	CompanyModuleGroup group
+	static hasMany= [adminGroups:CompanyAdminGroup]
 	boolean enable
 	
     static constraints = {

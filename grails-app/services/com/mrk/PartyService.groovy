@@ -144,64 +144,6 @@ class PartyService {
 	
 	
 	
-	@Transactional(readOnly = false)
-	public void updateGroupsForAdminUserCompany(Long userId, Long companyId, List<Long> groupIds) {
-		log.debug('Calling updateGroupsForUserCompany')
-		//select cug.group from com.tms.model.jpa.entity.CompanyUserGroupRelation cug where cug.company.id = :companyId and cug.user.id = :userId
-		def pu = PartyUser.get(userId)
-		def cp = PartyCompany.get(companyId)
-		def areEnable = cp.enable
-		def existingGroups = CompanyUserGroupRelation.findAllByCompanyAndUserAndIs_admin(cp,pu,true)
-		
-		//need to remove if not in array of groupIds
-		existingGroups.each { extg ->
-			
-			if(!extg.group) //if group is null remove it
-			{
-				log.debug("remove null group instance")
-				extg.delete()
-				
-			}
-			else
-			{
-				log.debug("existing groupId = ${extg.group.id}")
-				int extGroupId = extg.group.id
-				
-				if(groupIds.contains(extGroupId))
-				{
-					groupIds -=extGroupId
-					log.debug("final groupIds is ${groupIds}")
-					
-				}
-				else
-				{
-					log.debug("groupIds not contain ${extg.group.id}")
-					extg.delete()
-				}
-			}
-		}
-		
-		log.debug("final groupIds: ${groupIds}")
-		
-		groupIds.each{
-			CompanyAdminGroup group =  CompanyAdminGroup.get(it)
-			CompanyUserGroupRelation cugr = new CompanyUserGroupRelation();
-			cugr.setCompany(cp)
-			cugr.setDefault_company(true)
-			cugr.setUser(pu)
-			cugr.setEnable(areEnable)
-			cugr.setAdminGroup(group)
-			cugr.save();
-		}
-		
-		
-		log.debug("existing company group for user: ${existingGroups}")
-		
-		
-		log.debug('UpdateGroupsForUserCompany() successful')
-	}
-	
-	
 	
 	/*
 	 * Retrieve PartyUser with principal Id
