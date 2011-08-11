@@ -58,10 +58,11 @@ class DashboardController {
 
 		
 		//log.debug("current company working is ${session['company.current']}")
-		
+		*/
+		def currentCompany = CompanyUserGroupRelation.getCurrentCompany(user.id)
 		def companies =  CompanyUserGroupRelation.getAllUserCompanies(springSecurityService.principal.id)
 		[companies:companies]
-		*/
+		
 	}
 	
 	

@@ -51,8 +51,6 @@ class BootStrap {
 		
 		
 		//define authority
-		def adminRole = new Authority(authority: 'ROLE_TMS_ADMIN').save()
-		def userRole = new Authority(authority: 'ROLE_USER').save()
 		def auth0 = new Authority(authority: 'ROLE_COMPANY_VIEW').save()
 		def auth1 =new Authority(authority: 'ROLE_COMPANY_CREATE').save()
 		def auth2 = new Authority(authority: 'ROLE_COMPANY_UPDATE').save()
@@ -73,8 +71,21 @@ class BootStrap {
 		
 		//Group created by a company
 		def auth5 = new Authority(authority: 'ROLE_DASHBOARD_VIEW').save()
-		def compUserGroup1 = new CompanyUserGroup(name:'GROUP_DASHBOARD_VIEW').save()
-		compUserGroup1.addToAuthorities(auth5)
+		def compUserGroup1 = new CompanyUserGroup(name:'GROUP_BASE_USER').save()
+		compUserGroup1.addToAuthorities(auth4)
+		.addToAuthorities(auth5)
+		
+		
+		//group admin with 1 authority
+		def adminRole = new Authority(authority: 'ROLE_ADMIN').save()
+		def compUserAdminGroup = new CompanyUserGroup(name:'GROUP_USER_ADMIN').save()
+		compUserAdminGroup.addToAuthorities(adminRole)
+				
+		//group user with 1 authority
+		def userRole = new Authority(authority: 'ROLE_USER').save()
+		def compUserUserGroup = new CompanyUserGroup(name:'GROUP_USER_USER').save()
+		compUserUserGroup.addToAuthorities(userRole)
+		
 				
 		
 		
@@ -105,9 +116,10 @@ class BootStrap {
 		List userIds = [pu.id]
 		partyService.addUsersToCompany(partyCompany1.id,userIds)
 		partyService.addUsersToCompany(partyCompany2.id,userIds)
-		def groupsId = compUserGroup1.id 
-		partyService.updateGroupsForUserCompany(pu.id, partyCompany1.id, groupsId as List)
-		//partyService.updateGroupsForUserCompany(pu.id, partyCompany2.id, [2])
+		def groupsId1 = [compUserGroup1.id,compUserAdminGroup.id]
+		def groupsId2 = [compUserGroup1.id,compUserUserGroup.id]
+		partyService.updateGroupsForUserCompany(pu.id, partyCompany1.id, groupsId1)
+		partyService.updateGroupsForUserCompany(pu.id, partyCompany2.id, groupsId2)
 		//partyService.setDefaultCompany(pu.id, partyCompany1.id)
 		
 		

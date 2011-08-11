@@ -15,5 +15,9 @@
           optionKey="id"
           optionValue="name" onChange="this.form.submit();" />
     </g:form>
+    
+    <div>
+    <sec:ifAllGranted roles="ROLE_ADMIN">Create group of permission</sec:ifAllGranted>
+    </div>
     </body>
 </html>
