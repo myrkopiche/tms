@@ -1,5 +1,6 @@
 package com.tms.app
 
+import com.mrk.CompanyModuleGroupRelation;
 import com.mrk.CompanyUserGroupRelation;
 import com.mrk.PartyCompany;
 import com.mrk.PartyService;
@@ -10,7 +11,7 @@ import grails.plugins.springsecurity.Secured;
 import grails.plugins.springsecurity.SpringSecurityService;
 
 
-@Secured(['IS_AUTHENTICATED_FULLY'])
+@Secured(['IS_AUTHENTICATED_FULLY','ROLE_MODULE_BASE'])
 class DashboardController {
 	def userService
 	def partyService 
@@ -24,10 +25,14 @@ class DashboardController {
 	
 	
 	def view = {
-		//println springSecurityService.principal.id
+		Principal user = Principal.get(springSecurityService.principal.id)
 		
+		
+		//log.debug("company = ${user.authorities}")
+		//println springSecurityService.principal.id
+		/*
 		Principal user = Principal.get(springSecurityService.principal.id)	
-		println user.getAuthorities()
+		println user
 		def p = partyService.getUser(springSecurityService.principal.id)
 		def currenTCompany = CompanyUserGroupRelation.getCurrentCompany(user.id)
 		log.debug("currentCompany is ${currenTCompany}")
@@ -42,6 +47,7 @@ class DashboardController {
 		
 		def companies =  CompanyUserGroupRelation.getAllUserCompanies(springSecurityService.principal.id)
 		[companies:companies]
+		*/
 	}
 	
 	

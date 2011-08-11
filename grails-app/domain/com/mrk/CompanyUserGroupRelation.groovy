@@ -6,9 +6,7 @@ import java.util.logging.Logger;
 
 import org.apache.juli.logging.impl.Log4JLogger;
 import org.apache.log4j.*
-import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession;
-import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest;
-import org.springframework.web.context.request.RequestContextHolder;
+
 
 
 class CompanyUserGroupRelation implements Serializable{

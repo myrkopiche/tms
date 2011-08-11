@@ -2,6 +2,8 @@ import org.hibernate.validator.Email;
 import com.mrk.AccountType;
 import com.mrk.AddressType;
 
+import com.mrk.CompanyModuleGroup;
+import com.mrk.CompanyModuleGroupRelation;
 import com.mrk.CompanyUserGroup;
 import com.mrk.Party;
 import com.mrk.PartyUser;
@@ -38,6 +40,14 @@ class BootStrap {
 		new PhoneType(code:'Home',label:'Home Phone',description:'Home Phone' ).save(flush:true)
 		
 		
+		//module rights
+		def authm1 = new Authority(authority: 'ROLE_MODULE_BASE').save()
+		def authm2 = new Authority(authority: 'ROLE_MODULE_CONTACT').save()
+		def module1 = new CompanyModuleGroup(name:'GROUP_MODULE_BASE')
+		module1.addToAuthorities(authm1)
+		.addToAuthorities(authm2)
+		.save()
+		
 		
 		//define authority
 		def adminRole = new Authority(authority: 'ROLE_TMS_ADMIN').save()
@@ -46,6 +56,9 @@ class BootStrap {
 		def auth1 =new Authority(authority: 'ROLE_COMPANY_CREATE').save()
 		def auth2 = new Authority(authority: 'ROLE_COMPANY_UPDATE').save()
 		def auth3 = new Authority(authority: 'ROLE_COMPANY_DELETE').save()
+		
+		
+		
 		
 		//APPLICATION RIGHTS
 		def auth4 = new Authority(authority: 'ROLE_DASHBOARD').save()
@@ -83,7 +96,9 @@ class BootStrap {
 		
 		def partyCompany1 = new PartyCompany(email:'mp@wlab.ca',name:'wlab',enable:true,accountType:act1).save(flush:true)
 		def partyCompany2 = new PartyCompany(email:'info@wlab.ca',name:'mrk',enable:true,accountType:act1).save(flush:true)
-
+		
+		def cmgr = new CompanyModuleGroupRelation(company:partyCompany1,group:module1).save()
+		
 		List userIds = [pu.id]
 		partyService.addUsersToCompany(partyCompany1.id,userIds)
 		partyService.addUsersToCompany(partyCompany2.id,userIds)

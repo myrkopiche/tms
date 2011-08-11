@@ -33,11 +33,19 @@ class Principal implements Serializable {
 		//this.groups.collect {it.authorities } as Set
 		//get current company
 		PartyCompany currentCompany = CompanyUserGroupRelation.getCurrentCompany(this.id)				
-		def userGroups = CompanyUserGroupRelation.getUserGroups(this.id,currentCompany.id)
-		
-		log.debug("current all groups is : ${groups}")
+		CompanyUserGroup userGroups = CompanyUserGroupRelation.getUserGroups(this.id,currentCompany.id)
+		def moduleGroups = CompanyModuleGroupRelation.getCompanyGroups(currentCompany.id)
+		log.debug("current all groups is : ${moduleGroups}")
 		
 		def auth = []
+		
+		//loop in comapny module groups
+		moduleGroups.each{
+			it.authorities.each{
+				auth.add(it)
+			}
+		}
+		
 		//loop in company created groups
 		userGroups.each{
 			it.authorities.each{
