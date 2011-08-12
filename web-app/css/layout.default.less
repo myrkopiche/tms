@@ -1,0 +1,42 @@
+@import 'libs/boilerplate';
+@import 'libs/colors';
+@import 'libs/general.font.less';
+@import 'libs/general.tag.less';
+@import 'libs/general.class.less';
+
+
+
+#header-container{
+	padding-top:5px;
+	nav{
+		padding-top:10px;
+		ul li{
+			.floatRight;
+			a{
+				font-family:'RalewayThin'; 
+				display:block;
+				padding:18px 50px 18px 20px;
+				border-left:1px solid @even1;
+				color:@smooter-font-color;
+				font-size:0.8em;
+				.uppercase;
+				&:hover{
+					.blue;
+				}
+			}
+		}
+	}
+}
+
+#footer-container{
+	footer{
+		font-size:0.9em;
+		.box(24px 20px 2px 60px,180px 0 40px 0);
+		background:url(../images/elements/talk_mini.jpg) @harder-background-color 20px 13px no-repeat;
+		height:30px;
+		line-height:0.7em;
+		span,small{
+			padding-left:38px;
+		}
+	}
+}

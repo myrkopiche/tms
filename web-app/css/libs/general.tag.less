@@ -1,0 +1,71 @@
+@import 'colors';
+
+/*GENERAL TAG*/
+body{
+	font-family: 'TeXGyreHerosRegular';	
+	color:@main-font-color;
+	background:@main-background-color;
+	font-weight:lighter;
+	line-height: 100%;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+
+
+/*TEXT TAG*/
+a{
+	text-decoration:none;
+	color:@main-font-color;
+}
+
+small{
+	font-size:0.7em;
+	color:@smooter-font-color;
+}
+
+h1,h2{
+	font-family: 'RalewayThin';
+	letter-spacing:-1px;
+	font-weight:lighter;
+	text-transform:uppercase;
+	line-height:100%;
+}
+
+h1{
+	color:@main-font-color;
+	font-size:2.2em;
+}
+
+h2{
+	color:@smooter-font-color;
+	font-size:1.7em;
+}
+
+
+/*FORM TAG*/
+form{
+	display:block;
+	label{
+		margin-top:10px;
+		font-size:0.7em;
+		color:@smooter-font-color;
+		display:block;
+		clear:both;
+	}
+	input{
+		display:block;
+		clear:both;
+		&.submit{
+			margin-top:15px;
+			cursor:pointer;
+			border:none;
+			.callToAction(@contrast-background-color,@main-background-color);
+			&.small{
+				font-size:0.6em;
+			}
+		}
+	}
+	
+	
+}
