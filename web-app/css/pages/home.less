@@ -1,0 +1,168 @@
+@import '../libs/colors';
+@import '../libs/boilerplate';
+
+#boxes{
+	margin-top:45px;
+	.box1{
+		font-size:0.8em;
+		width:290px;
+		padding:35px 68px 0px 20px;
+	}
+	.box2{
+		width:232px;
+	}
+	.box3{}
+	.btn{
+		margin-top:20px;
+	}
+}
+
+#scroll_navigation{
+	padding-top:50px;
+	margin-top:25px;
+	background:url('../../images/elements/fade_middle.jpg') no-repeat 50% 0;
+	height:446px;
+}
+
+
+
+
+
+@nav_height: 446px;
+@nav_width: 792px;
+@navi_height: 20px;
+/*********** navigator ***********/
+
+
+/* position and dimensions of the navigator */
+.navi {
+	margin-left:@nav_width / 2;
+	width:100px;
+	height:20px;
+}
+
+/* items inside navigator */
+.navi a {
+	width:8px;
+	height:8px;
+	float:left;
+	margin:5px 3px 0 3px;
+	background:url(../../images/elements/navigator.png) 0 0 no-repeat;
+	display:block;
+	font-size:1px;
+}
+
+/* mouseover state */
+.navi a:hover {
+	background-position:0 -8px;      
+}
+
+/* active state (current page state) */
+.navi a.active {
+	background-position:0 -16px;     
+} 	
+/* main vertical scroll */
+#main {
+	position:relative;
+	overflow:hidden;
+	height: @nav_height - 1;
+	background:@harder-background-color;
+	border-bottom:1px solid @even1;
+}
+
+/* root element for pages */
+#pages {
+	position:absolute;
+	height:20000em;
+}
+
+/* single page */
+.page {
+	height: @nav_height;
+	width: @nav_width;
+}
+
+/* root element for horizontal scrollables */
+.scrollable {
+	position:relative;
+	overflow:hidden;
+	width: @nav_width;
+	background:pink;
+	height: @nav_height - @navi_height;
+}
+
+/* root element for scrollable items */
+.scrollable .items {
+	width:20000em;
+	position:absolute;
+	clear:both;
+}
+
+/* single scrollable item */
+.item {
+	float:left;
+	cursor:pointer;
+	width: @nav_width;
+	height:@nav_height - @navi_height;
+}
+
+
+
+/* main navigator */
+#main_navi {
+	float:left;
+	padding:0px !important;
+	margin:0px !important;
+}
+
+#main_navi li {
+	background:@harder-background-color;
+	border-bottom:1px solid @even1;
+	clear:both;
+	height:152px;
+	padding:35px;
+	width:120px;
+	cursor:pointer;
+}
+
+#main_navi li:hover {
+	background:@main-background-color;
+}
+
+#main_navi li.active {
+	.gradientV(@smooter-background-color,@harder-background-color);
+}
+
+
+
+#features{
+	height:90px;
+	text-align:center;
+	padding-top:70px;
+}
+
+#twitter_follow{
+	.box(36px 36px 0 80px, 0 4px 4px 0);
+	background:url(../../images/elements/twitter_share.png) @harder-background-color no-repeat 25px 25px;
+	height:50px;
+	width:274px;
+	.btn{
+		margin:-5px 
+	}
+}
+
+#in_action{
+	.box(15px 63px);
+	width:462px;
+	height:308px;
+}
+
+#newsletter{
+	.box(50px 45px);
+	width:300px;
+	height:148px;
+	form{
+		margin-top:10px;
+	}
+}
+
