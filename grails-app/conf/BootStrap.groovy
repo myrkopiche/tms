@@ -41,16 +41,33 @@ class BootStrap {
 		new PhoneType(code:'Home',label:'Home Phone',description:'Home Phone' ).save(flush:true)
 		
 		
-		//module rights
+		//module tms
 		def authm1 = new Authority(authority: 'ROLE_MODULE_BASE').save()
 		def authm2 = new Authority(authority: 'ROLE_MODULE_CONTACT').save()
+		new Authority(authority: 'ROLE_MODULE_CUSTOMERS').save()
+		new Authority(authority: 'ROLE_MODULE_VENDORS').save()
+		new Authority(authority: 'ROLE_MODULE_PROJECTS').save()
+		new Authority(authority: 'ROLE_MODULE_INVOICES').save()
 		def module1 = new CompanyModuleGroup(name:'GROUP_MODULE_BASE')
 		module1.addToAuthorities(authm1)
 		.addToAuthorities(authm2)
 		.save()
 		
 		
-		//define authority
+		//create group settings company
+		def a0 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_VIEW').save()
+		def a1 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_CREATE').save()
+		def a2 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_UPDATE').save()
+		def a3 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_DELETE').save()
+		def sg1 = new CompanyAdminGroup(name:'GROUP_MODULE_SETTING_COMPANY_ADMIN').save()
+		sg1.addToAuthorities(a0)
+		.addToAuthorities(a1)
+		.addToAuthorities(a2)
+		.addToAuthorities(a3)
+		
+		
+		
+		//define company admin roles
 		def auth0 = new Authority(authority: 'ROLE_COMPANY_VIEW').save()
 		def auth1 =new Authority(authority: 'ROLE_COMPANY_CREATE').save()
 		def auth2 = new Authority(authority: 'ROLE_COMPANY_UPDATE').save()
@@ -77,12 +94,12 @@ class BootStrap {
 		
 		
 		//group admin with 1 authority
-		def adminRole = new Authority(authority: 'ROLE_ADMIN').save()
+		def adminRole = new Authority(authority: 'ROLE_COMPANY_ADMIN').save()
 		def compUserAdminGroup = new CompanyUserGroup(name:'GROUP_USER_ADMIN').save()
 		compUserAdminGroup.addToAuthorities(adminRole)
 				
 		//group user with 1 authority
-		def userRole = new Authority(authority: 'ROLE_USER').save()
+		def userRole = new Authority(authority: 'ROLE_COMPANY_USER').save()
 		def compUserUserGroup = new CompanyUserGroup(name:'GROUP_USER_USER').save()
 		compUserUserGroup.addToAuthorities(userRole)
 		
