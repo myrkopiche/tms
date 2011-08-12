@@ -17,7 +17,7 @@ environments {
         dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop','update'
             //url = "jdbc:hsqldb:mem:devDB"
-			url = "jdbc:mysql://127.0.0.1:3306/mytest"
+			url = "jdbc:mysql://127.0.0.1:8889/mytest"
         }
     }
     test {

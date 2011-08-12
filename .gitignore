@@ -22,3 +22,5 @@ stacktrace.log
 # project release file
 *.war
 .DS_STORE
+
+grails-app/conf/DataSource.groovy
