@@ -41,6 +41,18 @@ class BootStrap {
 		new PhoneType(code:'Home',label:'Home Phone',description:'Home Phone' ).save(flush:true)
 		
 		
+		//create group settings company
+		def a0 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_GROUP_VIEW').save()
+		def a1 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_GROUP_CREATE').save()
+		def a2 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_GROUP_UPDATE').save()
+		def a3 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_GROUP_DELETE').save()
+		CompanyAdminGroup sg1 = new CompanyAdminGroup(name:'GROUP_MODULE_SETTING_COMPANY_ADMIN').save()
+		sg1.addToAuthorities(a0)
+		.addToAuthorities(a1)
+		.addToAuthorities(a2)
+		.addToAuthorities(a3)
+		
+		
 		//module tms
 		def authm1 = new Authority(authority: 'ROLE_MODULE_BASE').save()
 		def authm2 = new Authority(authority: 'ROLE_MODULE_CONTACT').save()
@@ -48,22 +60,14 @@ class BootStrap {
 		new Authority(authority: 'ROLE_MODULE_VENDORS').save()
 		new Authority(authority: 'ROLE_MODULE_PROJECTS').save()
 		new Authority(authority: 'ROLE_MODULE_INVOICES').save()
-		def module1 = new CompanyModuleGroup(name:'GROUP_MODULE_BASE')
+		def module1 = new CompanyModuleGroup(name:'GROUP_MODULE_BASE',admingroup:sg1)
 		module1.addToAuthorities(authm1)
 		.addToAuthorities(authm2)
 		.save()
 		
 		
-		//create group settings company
-		def a0 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_VIEW').save()
-		def a1 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_CREATE').save()
-		def a2 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_UPDATE').save()
-		def a3 = new Authority(authority: 'ROLE_SETTINGS_COMPANY_DELETE').save()
-		def sg1 = new CompanyAdminGroup(name:'GROUP_MODULE_SETTING_COMPANY_ADMIN').save()
-		sg1.addToAuthorities(a0)
-		.addToAuthorities(a1)
-		.addToAuthorities(a2)
-		.addToAuthorities(a3)
+		
+		
 		
 		
 		
@@ -88,22 +92,23 @@ class BootStrap {
 		
 		//Group created by a company
 		def auth5 = new Authority(authority: 'ROLE_DASHBOARD_VIEW').save()
-		def compUserGroup1 = new CompanyUserGroup(name:'GROUP_BASE_USER').save()
+		def compUserGroup1 = new CompanyUserGroup(name:'GROUP_BASE_USER',isprivate:true).save()
 		compUserGroup1.addToAuthorities(auth4)
 		.addToAuthorities(auth5)
 		
 		
 		//group admin with 1 authority
 		def adminRole = new Authority(authority: 'ROLE_COMPANY_ADMIN').save()
-		def compUserAdminGroup = new CompanyUserGroup(name:'GROUP_USER_ADMIN').save()
+		def compUserAdminGroup = new CompanyUserGroup(name:'GROUP_USER_ADMIN',isprivate:true).save()
 		compUserAdminGroup.addToAuthorities(adminRole)
 				
 		//group user with 1 authority
 		def userRole = new Authority(authority: 'ROLE_COMPANY_USER').save()
-		def compUserUserGroup = new CompanyUserGroup(name:'GROUP_USER_USER').save()
+		def compUserUserGroup = new CompanyUserGroup(name:'GROUP_USER_USER',isprivate:true).save()
 		compUserUserGroup.addToAuthorities(userRole)
 		
-				
+		
+	
 		
 		
 		String password = springSecurityService.encodePassword('password')
@@ -123,18 +128,23 @@ class BootStrap {
 		//add company base module rights
 		CompanyModuleGroup cmg = CompanyModuleGroup.findByName('GROUP_MODULE_BASE')
 		def cmgr = new CompanyModuleGroupRelation(company:partyCompany1,group:cmg,enable:true).save()
+		def cmgr2 = new CompanyModuleGroupRelation(company:partyCompany2,group:cmg,enable:true).save()
 		//add admin base group rights
-		def cag = CompanyAdminGroup.findAll()
+		/*def cag = CompanyAdminGroup.findAll()
 		cag.each{
 			cmgr.addToAdminGroups(it)
-		}
+			cmgr2.addToAdminGroups(it)
+		}*/
 		
+		//add user group to company
+		//group user with 1 authority
+		//new CompanyUserGroup(name:'3D ARTISTS',partyCompany2).save()
 		
 		List userIds = [pu.id]
 		partyService.addUsersToCompany(partyCompany1.id,userIds)
 		partyService.addUsersToCompany(partyCompany2.id,userIds)
 		def groupsId1 = [compUserGroup1.id,compUserAdminGroup.id]
-		def groupsId2 = [compUserGroup1.id,compUserUserGroup.id]
+		def groupsId2 = [compUserGroup1.id,compUserAdminGroup.id]
 		partyService.updateGroupsForUserCompany(pu.id, partyCompany1.id, groupsId1)
 		partyService.updateGroupsForUserCompany(pu.id, partyCompany2.id, groupsId2)
 		//partyService.setDefaultCompany(pu.id, partyCompany1.id)

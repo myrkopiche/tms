@@ -7,7 +7,6 @@ class CompanyModuleGroupRelation implements Serializable{
 
     PartyCompany company
 	CompanyModuleGroup group
-	static hasMany= [adminGroups:CompanyAdminGroup]
 	boolean enable
 	
     static constraints = {
@@ -24,7 +23,7 @@ class CompanyModuleGroupRelation implements Serializable{
 	static def getCompanyAdminGroups(long companyId)
 	{
 		PartyCompany partyCompany = PartyCompany.get(companyId)
-		CompanyModuleGroupRelation.findAllByCompanyAndEnable(partyCompany,true).collect { it.adminGroups}.flatten()
+		CompanyModuleGroupRelation.findAllByCompanyAndEnable(partyCompany,true).collect { it.group.admingroup}.flatten()
 	}
 	
 	

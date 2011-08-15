@@ -32,14 +32,16 @@ class CompanyUserGroupRelation implements Serializable{
 	}
 	
 	
-	static Set<CompanyUserGroup> getUserGroups(long principalId,long companyId)
+	static List<CompanyUserGroup> getUserGroups(long principalId,long companyId,params = null)
 	{
 		Principal pr = Principal.get(principalId)
 		PartyUser partyUser = PartyUser.findByPrincipal(pr)
 		PartyCompany partyCompany = PartyCompany.get(companyId)
-		CompanyUserGroupRelation.findAllByUserAndCompany(partyUser,partyCompany).collect { it.groups }.flatten() as Set
+		//CompanyUserGroupRelation.findAllByUserAndCompany(partyUser,partyCompany).collect { it.groups }.flatten() as Set
+		CompanyUserGroupRelation.list(params).find{it.company == partyCompany && it.user == partyUser}.collect{it.groups}.flatten().find { it.isprivate == false } as List
 		
 	}
+	
 	
 	static List<PartyCompany> getAllUserCompanies(long principalId)		
 	{

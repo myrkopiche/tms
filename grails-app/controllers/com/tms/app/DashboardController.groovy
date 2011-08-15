@@ -26,7 +26,7 @@ class DashboardController {
 		//userService.setCurrentCompanyAuthorities(2)
 	}
 	
-	@Secured(['ROLE_DASHBOARD_VIEW'])
+	//@Secured(['ROLE_DASHBOARD_VIEW'])
 	def view = {
 		Principal user = Principal.get(springSecurityService.principal.id)
 		//def currenTCompany = CompanyUserGroupRelation.getCurrentCompany(user.id)

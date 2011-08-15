@@ -14,7 +14,7 @@ class Group implements Serializable{
 	}
 	
     static constraints = {
-		name(unique:true,maxsize:50)
+		name(unique:true,maxsize:50,nullable:false,blank:false)
     }
 	
 	
