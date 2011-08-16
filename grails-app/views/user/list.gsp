@@ -24,33 +24,27 @@
                         
                             <g:sortableColumn property="id" title="${message(code: 'companyUserGroup.id.label', default: 'Id')}" />
                         
-                            <g:sortableColumn property="name" title="${message(code: 'companyUserGroup.name.label', default: 'Name')}" />
-                        
-                            <th><g:message code="companyUserGroup.company.label" default="Company" /></th>
-                        <sec:ifAnyGranted roles="ROLE_TMS_ADMIN">
-                            <g:sortableColumn property="isprivate" title="${message(code: 'companyUserGroup.isprivate.label', default: 'Isprivate')}" />
-                        </sec:ifAnyGranted>
+                            <g:sortableColumn property="firstname" title="${message(code: 'companyUserGroup.name.label', default: 'Firstname')}" />
+                        	<g:sortableColumn property="latname" title="${message(code: 'companyUserGroup.name.label', default: 'Lastname')}" />
+                           
                         </tr>
                     </thead>
                     <tbody>
-                    <g:each in="${companyUserGroupInstanceList}" status="i" var="companyUserGroupInstance">
+                    <g:each in="${companyUserInstanceList}" status="i" var="companyUserInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="show" id="${companyUserGroupInstance.id}">${fieldValue(bean: companyUserGroupInstance, field: "id")}</g:link></td>
+                            <td><g:link action="show" id="${companyUserInstance.id}">${fieldValue(bean: companyUserInstance, field: "id")}</g:link></td>
                         
-                            <td>${fieldValue(bean: companyUserGroupInstance, field: "name")}</td>
-                        
-                            <td>${fieldValue(bean: companyUserGroupInstance, field: "company")}</td>
-                        <sec:ifAnyGranted roles="ROLE_TMS_ADMIN">
-                            <td><g:formatBoolean boolean="${companyUserGroupInstance.isprivate}" /></td>
-                        </sec:ifAnyGranted>
+                            <td>${fieldValue(bean: companyUserInstance, field: "firstname")}</td>
+                            <td>${fieldValue(bean: companyUserInstance, field: "lastname")}</td>
+
                         </tr>
                     </g:each>
                     </tbody>
                 </table>
             </div>
             <div class="paginateButtons">
-                <g:paginate total="${companyUserGroupInstanceTotal}" />
+                <g:paginate total="${companyUserInstanceTotal}" />
             </div>
         </div>
     </body>
