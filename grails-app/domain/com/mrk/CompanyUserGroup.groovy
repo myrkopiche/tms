@@ -18,7 +18,7 @@ class CompanyUserGroup extends Group {
 	{		
 		def c = CompanyUserGroup.createCriteria()
 		def results = c.list(params) {
-			like("company", company)
+			eq("company", company)
 			order("name", "desc")
 		}
 		return results

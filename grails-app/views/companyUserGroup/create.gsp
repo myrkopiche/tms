@@ -66,6 +66,7 @@
            				<p><h2>Title: ${it.group.name}</h2></p>
     				  <g:each in="${it.group.admingroup.authorities}">
     				  	<p>Role: ${it.authority}</p>
+    				  	<g:checkBox name="authorities" value="${it.id}" checked="false" />
     				  </g:each>
            			
            			</div>          			

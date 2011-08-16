@@ -42,14 +42,7 @@
                         
                             
                         
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="authorities"><g:message code="companyUserGroup.authorities.label" default="Authorities" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: companyUserGroupInstance, field: 'authorities', 'errors')}">
-                                    
-                                </td>
-                            </tr>
+                   
                         
                         <sec:ifAnyGranted roles="ROLE_TMS_ADMIN">
                         
@@ -83,6 +76,27 @@
                         
                         </tbody>
                     </table>
+                    
+                    ${modules}
+                    <g:each in="${modules}">   
+	           				<div class="module" style="padding-bottom:20px;padding-top:10px;">
+	           					<p><h2>Title: ${it.group.name}</h2></p>
+	    				  		<g:each in="${it.group.admingroup.authorities}">
+	    				  			<p>Role: ${it.authority}</p>
+	    				  			<input type="checkbox"
+	    				  				name="authorities"
+	    				  				value="${it.id}"  	
+	    				  				<g:each var="d" in="${companyUserGroupInstance.authorities}" >			  				
+	    				  				<g:if test="${d == it}">CHECKED</g:if>
+	    				  				</g:each>
+	    				  			/>
+	    				  			
+	    				  			
+	    				  		</g:each>
+	           			
+	           				</div>          			
+						</g:each>
+                    
                 </div>
                 <div class="buttons">
                     <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
