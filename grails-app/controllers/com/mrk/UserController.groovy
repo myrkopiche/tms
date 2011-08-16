@@ -15,7 +15,7 @@ class UserController {
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		PartyCompany company = CompanyUserGroupRelation.getCurrentCompany(springSecurityService.principal.id)
-		def groups =  CompanyUserGroup.getCompanyGroups(company,params)
+		def users =  CompanyUserGroup.getCompanyGroups(company,params)
 		[companyUserGroupInstanceList: groups, companyUserGroupInstanceTotal: groups.count()]
 	}
 }
