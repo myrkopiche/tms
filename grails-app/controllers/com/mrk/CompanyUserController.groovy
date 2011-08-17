@@ -3,7 +3,7 @@ package com.mrk
 import grails.plugins.springsecurity.Secured;
 
 @Secured(['IS_AUTHENTICATED_FULLY','ROLE_COMPANY_ADMIN','ROLE_MODULE_BASE'])
-class UserController {
+class CompanyUserController {
 	def springSecurityService
 	def partyService
 	
@@ -21,4 +21,30 @@ class UserController {
 
 		[companyUserInstanceList: users, companyUserInstanceTotal: users.count()]
 	}
+	
+	@Secured(['ROLE_SETTINGS_COMPANY_GROUP_CREATE'])
+	def invite= {
+		
+	}
+	
+	@Secured(['ROLE_SETTINGS_COMPANY_GROUP_CREATE'])
+	def search_user= {
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		def pu = PartyUser.createCriteria()
+		def results = pu.list(params) {
+			like("firstname",  params.firstname +'%')
+			or{
+				like("lastname", params.lastname +'%')
+			}
+			or{
+				like("email", params.email + '%')
+			}
+			
+			order("firstname", "desc")
+		}
+		println results
+		render(view: "invite", model:[results:results,resultsTotal:results.count()])	
+	}
+	
+	
 }
