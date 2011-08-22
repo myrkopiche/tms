@@ -43,7 +43,6 @@ class CompanyUserController {
 			
 			order("firstname", "desc")
 		}
-		println results
 		render(view: "invite", model:[results:results,resultsTotal:results.count()])	
 	}
 	

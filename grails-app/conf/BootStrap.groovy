@@ -118,7 +118,7 @@ class BootStrap {
 		
 		//GroupAuthority.create group1, auth1, true
 		
-		def pu = new PartyUser(firstname:'firstname',lastname:'lastname',email:'mp@mr-k.org',principal:testUser)
+		def pu = new PartyUser(firstname:'firstname',lastname:'lastname',email:'mp@wlab.ca',principal:testUser)
 		pu.save()
 		
 		
@@ -126,7 +126,7 @@ class BootStrap {
 		String password2 = springSecurityService.encodePassword('password')
 		def testUser2 = new Principal(username: 'mp', enabled: true, password: password)
 		testUser2.save(flush: true)
-		def pu2 = new PartyUser(firstname:'Myrko',lastname:'Piche',email:'mp@wlab.ca',principal:testUser)
+		def pu2 = new PartyUser(firstname:'Myrko',lastname:'Piche',email:'mp@mr-k.org',principal:testUser)
 		pu2.save()
 		
 		

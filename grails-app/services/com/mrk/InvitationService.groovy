@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 class InvitationService {
 
 	def tmsEncryptionService
+	def partyService
 	def userInviationConfirmationUrl = "http://localhost:8080/tms/invitation/confirmation"
 	def userInviationCancelUrl = "http://localhost:8080/tms/invitation/cancel"
 	
@@ -21,6 +22,8 @@ class InvitationService {
 	   reg.setPartyUser(user)
 	   reg.setRegistrationToken(UUID.randomUUID().toString())
 	   reg.save()
+	   
+	   Invitation inv = new Invitation(user:user,company:company).save()
 	   
 	   this.sendUserInvitationEmail(reg, company)
 	   log.debug("Successfully sendUserInvitation")
@@ -59,8 +62,16 @@ class InvitationService {
 	   Registration reg = Registration.findByRegistrationTokenAndPartyUser(token,user)
 	   if(reg) //found registration
 	   {
-		   this.addUsersToCompany(company.id, user.id as List)
+		   partyService.addUsersToCompany(company.id, user.id as List)
 		   reg.delete()
+		   
+		   //delete invitation 
+		   Invitation inv = Invitation.findByUserAndCompany(user,company)
+		   if(inv)
+		   {
+			   inv.delete()
+		   }
+		   
 		   log.debug("successfully confirmInvitaion")
 	   }
 	   else

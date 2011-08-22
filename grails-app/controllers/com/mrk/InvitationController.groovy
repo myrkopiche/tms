@@ -17,7 +17,7 @@ class InvitationController implements Serializable {
 	def confirmation = {
 		if(params.tk && params.userId && params.companyId)
 		{
-			partyService.confirmInvitation(params.tk,params.userId,params.companyId)
+			invitationService.confirmInvitation(params.tk,params.userId,params.companyId)
 			render "Invitation Successfull you are now part of the company"
 		}
 		else
@@ -32,7 +32,7 @@ class InvitationController implements Serializable {
 		println params
 		if(params.tk && params.userId && params.companyId)
 		{
-			partyService.cancelInvitation(params.tk,params.userId,params.companyId)
+			invitationService.cancelInvitation(params.tk,params.userId,params.companyId)
 			render "You Cancel the invitation, thank you."
 		}
 		else
