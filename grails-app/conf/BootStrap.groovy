@@ -114,7 +114,7 @@ class BootStrap {
 		String password = springSecurityService.encodePassword('password')
 		def testUser = new Principal(username: 'me', enabled: true, password: password)
 		testUser.save(flush: true)
-		//testUser.addToGroups(group3)
+		//testUser.addToGroups(group3)		
 		
 		//GroupAuthority.create group1, auth1, true
 		
@@ -122,8 +122,16 @@ class BootStrap {
 		pu.save()
 		
 		
+		//add talk user without association
+		String password2 = springSecurityService.encodePassword('password')
+		def testUser2 = new Principal(username: 'mp', enabled: true, password: password)
+		testUser2.save(flush: true)
+		def pu2 = new PartyUser(firstname:'Myrko',lastname:'Piche',email:'mp@wlab.ca',principal:testUser)
+		pu2.save()
+		
+		
 		//create company		
-		def partyCompany1 = new PartyCompany(email:'mp@wlab.ca',name:'wlab',enable:true,accountType:act1).save(flush:true)
+		def partyCompany1 = new PartyCompany(email:'mpa@wlab.ca',name:'wlab',enable:true,accountType:act1).save(flush:true)
 		def partyCompany2 = new PartyCompany(email:'info@wlab.ca',name:'mrk',enable:true,accountType:act1).save(flush:true)
 		//add company base module rights
 		CompanyModuleGroup cmg = CompanyModuleGroup.findByName('GROUP_MODULE_BASE')

@@ -6,6 +6,7 @@ import grails.plugins.springsecurity.Secured;
 class CompanyUserController {
 	def springSecurityService
 	def partyService
+	def invitationService
 	
    @Secured(['ROLE_SETTINGS_COMPANY_GROUP_VIEW'])
     def index = {
@@ -45,6 +46,24 @@ class CompanyUserController {
 		println results
 		render(view: "invite", model:[results:results,resultsTotal:results.count()])	
 	}
+	
+	def sendInvitation = {
+		PartyCompany currentCompany = CompanyUserGroupRelation.getCurrentCompany(springSecurityService.principal.id)
+		def user = PartyUser.get(params.userId)
+		if(user)
+		{
+			invitationService.sendUserInvitation(user.id, currentCompany.id)
+			render("send complete")
+		}
+		else
+		{
+			redirect(action: "invite")
+		}
+		
+	}
+	
+	
+	
 	
 	
 }

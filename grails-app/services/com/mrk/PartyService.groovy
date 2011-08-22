@@ -8,7 +8,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 class PartyService {
 	
-	
 	@Transactional(readOnly = true)
 	public List getUsersForCompany(Long companyId){
 		log.debug("Calling getUsersForCompany() with companyId = ${companyId}");
@@ -169,7 +168,6 @@ class PartyService {
 				
 		log.debug('Calling setDefaultCompany service successful')
 	}
-	
 	
 	
 	

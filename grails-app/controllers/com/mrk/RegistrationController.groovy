@@ -13,7 +13,6 @@ class RegistrationController implements Serializable {
 	def registrationService
 	def tmsEncryptionService
 	def springSecurityService
-	def partyService
 	
 	static allowedMethods = [confirmation:'GET',index:'GET',registrationstep1:'POST',company:'GET',registerCompany:'POST']
 	
@@ -174,7 +173,7 @@ class RegistrationController implements Serializable {
 		
 		
 	}
-	
+		
 	
 		
 	

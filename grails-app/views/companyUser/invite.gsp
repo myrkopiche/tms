@@ -32,14 +32,18 @@
                 
                 <div class="result" style="padding-top:15px">
                 	<g:each  in="${results}"  status="i" var="res" >
-                		<div class="${(i % 2) == 0 ? 'odd' : 'even'}" style="padding:15px">${res.firstname } &nbsp; ${res.lastname }</div>
+                		<g:form action="sendInvitation">
+                		<div class="${(i % 2) == 0 ? 'odd' : 'even'}" style="padding:15px">${res.firstname } &nbsp; ${res.lastname } <g:hiddenField name="userId" value="${res.id }" /><g:submitButton name="Invite This User"/></div>
+                		</g:form>
                 	</g:each>
                 </div>
                 
             </div>
+            <g:if test="${resultsTotal}">
             <div class="paginateButtons">
                 <g:paginate total="${resultsTotal}" />
             </div>
+            </g:if>
             
         </div>
     </body>
