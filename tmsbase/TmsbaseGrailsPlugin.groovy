@@ -37,7 +37,7 @@ Brief description of the plugin.
 		def config =  application.config;
 		config.jasypt.password = "tR54S98UJIO90IKOKKL-09-1222-09-01"
 		config.jasypt.keyObtentionIterations = 1000
-		config.grails.mail.host= "smtp.gmail.com"
+		/*config.grails.mail.host= "smtp.gmail.com"
 		config.grails.mail.port = 465
 		config.grails.mail.username = "myrkopiche@gmail.com"
 		config.grails.mail.password = "jimbo21"
@@ -45,6 +45,7 @@ Brief description of the plugin.
 					   "mail.smtp.socketFactory.port":"465",
 					   "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
 					   "mail.smtp.socketFactory.fallback":"false"]
+		*/
 		
     }
 

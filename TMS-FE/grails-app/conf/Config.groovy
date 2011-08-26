@@ -90,3 +90,16 @@ log4j = {
 	debug 'grails.app',
 	'org.codehaus.groovy.grails.webflow.engine.builder.FlowInfoCapturer'
 }
+
+grails {
+	mail {
+	  host = "smtp.gmail.com"
+	  port = 465
+	  username = "xxxx@gmail.com"
+	  password = "xxxxx"
+	  props = ["mail.smtp.auth":"true",
+			   "mail.smtp.socketFactory.port":"465",
+			   "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+			   "mail.smtp.socketFactory.fallback":"false"]
+	}
+ }
