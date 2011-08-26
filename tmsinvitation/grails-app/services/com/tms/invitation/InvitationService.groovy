@@ -8,8 +8,8 @@ class InvitationService {
 
 	def tmsEncryptionService
 	def partyService
-	def userInviationConfirmationUrl = "http://localhost:8080/tms/invitation/confirmation"
-	def userInviationCancelUrl = "http://localhost:8080/tms/invitation/cancel"
+	def userInviationConfirmationUrl = "http://localhost:8080/TMS-FE/invitation/confirmation"
+	def userInviationCancelUrl = "http://localhost:8080/TMS-FE/invitation/cancel"
 	
 	/*
 	* Invite person to company
