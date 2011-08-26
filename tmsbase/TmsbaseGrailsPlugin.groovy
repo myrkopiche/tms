@@ -39,8 +39,8 @@ Brief description of the plugin.
 		config.jasypt.keyObtentionIterations = 1000
 		config.grails.mail.host= "smtp.gmail.com"
 		config.grails.mail.port = 465
-		config.grails.mail.username = "a@gmail.com"
-		config.grails.mail.password = "wlabwlab"
+		config.grails.mail.username = "myrkopiche@gmail.com"
+		config.grails.mail.password = "jimbo21"
 		config.grails.mail.props = ["mail.smtp.auth":"true",
 					   "mail.smtp.socketFactory.port":"465",
 					   "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",

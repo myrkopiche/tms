@@ -53,7 +53,7 @@ class InvitationService {
 		   to "${registration.partyUser.email}"
 		   subject "Hello ${registration.partyUser.firstname}"
 		   body( view:"/mail/userInvitation",
-			   model:[firstname:registration.partyUser.firstname,lastname:registration.partyUser.lastname,token:tokenEncrypt,userId:userIdEncrypt,confirmationUrl:this.userInviationConfirmationUrl,cancelUrl:this.userInviationCancelUrl, companyName:company.name,companyId:companyIdEncrypt ])
+			   model:[firstname:registration.partyUser.firstname,lastname:registration.partyUser.lastname,token:tokenEncrypt,userId:userIdEncrypt,confirmationUrl:this.userInviationConfirmationUrl,cancelUrl:this.userInviationCancelUrl, companyName:company.name,companyId:companyIdEncrypt ],plugin:'tmsinvitation')
 		 }
 	   
    }
