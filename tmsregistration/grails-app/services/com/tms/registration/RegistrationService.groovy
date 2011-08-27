@@ -56,7 +56,7 @@ class RegistrationService {
 			partyService.addUsersToCompany(partycompany.id,partyuser.id as List,true)
 			
 			//add company base module rights
-			//TODO registration company change group with selected acount type
+			//TODO registration company change group with selected acount type	
 			CompanyModuleGroup cmg = CompanyModuleGroup.findByName('GROUP_MODULE_BASE')
 			def cmgr = new CompanyModuleGroupRelation(company:partycompany,group:cmg,enable:true).save()
 			
