@@ -7,8 +7,8 @@ class RegistrationService {
 	def springSecurityService
 	def tmsEncryptionService
 	def partyService
-    def emailConfirmationUrl = "http://localhost:8080/tms/registration/confirmation"
-	def emailCompanyConfirmationUrl = "http://localhost:8080/tms/registration/companyConfirmation"
+    def emailConfirmationUrl = "http://localhost:8080/TMS-FE/registration/confirmation"
+	def emailCompanyConfirmationUrl = "http://localhost:8080/TMS-FE/registration/companyConfirmation"
 	
 	@Transactional(readOnly = false)
     public void registerUser(params) {
@@ -56,14 +56,10 @@ class RegistrationService {
 			partyService.addUsersToCompany(partycompany.id,partyuser.id as List,true)
 			
 			//add company base module rights
+			//TODO registration company change group with selected acount type
 			CompanyModuleGroup cmg = CompanyModuleGroup.findByName('GROUP_MODULE_BASE')
 			def cmgr = new CompanyModuleGroupRelation(company:partycompany,group:cmg,enable:true).save()
 			
-			//add admin base group rights
-			def cag = CompanyAdminGroup.findAll()
-			cag.each{
-				cmgr.addToAdminGroups(it)
-			}
 			
 			//create registration form
 			
@@ -164,7 +160,7 @@ class RegistrationService {
 			to "${registration.partyUser.email}"
 			subject "Hello ${partycompany.name}"
 			body( view:"/mail/registrationCompanyConfirmation",
-				model:[name:partycompany.name,token:tokenEncrypt,email:emailEncrypt,emailConfirmationUrl:this.emailCompanyConfirmationUrl,companyEmail:companyEmailEncrypt,companyId:companyIdEncrypt ])
+				model:[name:partycompany.name,token:tokenEncrypt,email:emailEncrypt,emailConfirmationUrl:this.emailCompanyConfirmationUrl,companyEmail:companyEmailEncrypt,companyId:companyIdEncrypt ],plugin:'tmsregistration')
 		  }
 		  
 		

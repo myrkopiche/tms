@@ -31,6 +31,7 @@ grails.project.dependency.resolution = {
 	plugins {
 		runtime ':spring-security-core:1.2'
 		runtime ':mail:1.0-SNAPSHOT'
+		runtime ':webflow:1.3.7'
 	  }
 }
 
